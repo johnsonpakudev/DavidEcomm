@@ -3,9 +3,11 @@ import { Star } from "lucide-react";
 export function StarRating({
   rating,
   count,
+  showCount = true,
 }: {
   rating: number;
-  count: number;
+  count?: number;
+  showCount?: boolean;
 }) {
   const filledStars = Math.round(rating);
 
@@ -20,7 +22,7 @@ export function StarRating({
           />
         ))}
       </div>
-      <span>({count})</span>
+      {showCount && typeof count === "number" ? <span>({count})</span> : null}
     </div>
   );
 }
