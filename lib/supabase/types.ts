@@ -5,6 +5,8 @@ export type NavPillarKey =
 
 export type ProductBadge = "best_seller" | "new" | "sale" | null;
 
+export type ProductRelationType = "related" | "cross_sell" | "upsell";
+
 export interface Category {
   id: string;
   name: string;
@@ -26,6 +28,56 @@ export interface ProductImage {
   url: string;
   alt_text: string;
   sort_order: number;
+}
+
+export interface ProductVariant {
+  id: string;
+  product_id: string;
+  sku: string;
+  name: string;
+  option_type: string;
+  option_value: string;
+  price: number | null;
+  compare_at_price: number | null;
+  image_url: string | null;
+  swatch_color: string | null;
+  stock_quantity: number;
+  in_stock: boolean;
+  is_default: boolean;
+  sort_order: number;
+  active: boolean;
+  created_at?: string;
+}
+
+export interface ProductSpecification {
+  id: string;
+  product_id: string;
+  group_name: string | null;
+  label: string;
+  value: string;
+  sort_order: number;
+}
+
+export interface ProductRelation {
+  id: string;
+  product_id: string;
+  related_product_id: string;
+  relation_type: ProductRelationType;
+  sort_order: number;
+  created_at?: string;
+  related_product?: Product | null;
+}
+
+export interface ProductReview {
+  id: string;
+  product_id: string;
+  rating: number;
+  title: string | null;
+  body: string;
+  author_name: string;
+  verified_purchase: boolean;
+  published: boolean;
+  created_at: string;
 }
 
 export interface Product {
@@ -54,6 +106,17 @@ export interface Product {
   updated_at?: string;
   product_images?: ProductImage[];
   categories?: Category | null;
+  product_variants?: ProductVariant[];
+  product_specifications?: ProductSpecification[];
+  product_reviews?: ProductReview[];
+}
+
+export interface ProductDetail extends Product {
+  variants: ProductVariant[];
+  specifications: ProductSpecification[];
+  reviews: ProductReview[];
+  crossSellProducts: Product[];
+  relatedProducts: Product[];
 }
 
 export interface HomepageHero {
@@ -136,6 +199,18 @@ export interface Database {
       };
       product_images: {
         Row: ProductImage;
+      };
+      product_variants: {
+        Row: ProductVariant;
+      };
+      product_specifications: {
+        Row: ProductSpecification;
+      };
+      product_relations: {
+        Row: ProductRelation;
+      };
+      product_reviews: {
+        Row: ProductReview;
       };
       homepage_heroes: {
         Row: HomepageHero;
