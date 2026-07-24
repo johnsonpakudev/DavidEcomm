@@ -104,7 +104,10 @@ values
 on conflict (product_id, related_product_id, relation_type) do update set
   sort_order = excluded.sort_order;
 
-insert into product_reviews (id, product_id, rating, title, body, author_name, verified_purchase, published, created_at)
+insert into product_reviews (
+  id, product_id, rating, title, body, author_name, verified_purchase, published,
+  source, external_id, source_url, imported_at, author_location, locale, include_in_rating, created_at
+)
 values
   (
     '43000000-0000-0000-0000-000000000001',
@@ -115,6 +118,13 @@ values
     'Sarah M.',
     true,
     true,
+    'native',
+    null,
+    null,
+    null,
+    'Melbourne, VIC',
+    'en-AU',
+    true,
     '2026-06-12T10:00:00Z'
   ),
   (
@@ -124,7 +134,14 @@ values
     'Perfect for our ensuite',
     'Installed easily and matches our other brass fixtures perfectly.',
     'James T.',
+    false,
     true,
+    'google',
+    'google:ChZDSUhNMG9nS0VJQ0FnSUR-example-002',
+    'https://www.google.com/maps/reviews',
+    '2026-07-01T08:00:00Z',
+    'Sydney, NSW',
+    'en-AU',
     true,
     '2026-05-28T14:30:00Z'
   ),
@@ -137,6 +154,13 @@ values
     'Emma L.',
     true,
     true,
+    'import',
+    'csv-row-8182-BB-003',
+    null,
+    '2026-07-15T12:00:00Z',
+    'Brisbane, QLD',
+    'en-AU',
+    true,
     '2026-05-03T09:15:00Z'
   )
 on conflict (id) do update set
@@ -146,6 +170,13 @@ on conflict (id) do update set
   author_name = excluded.author_name,
   verified_purchase = excluded.verified_purchase,
   published = excluded.published,
+  source = excluded.source,
+  external_id = excluded.external_id,
+  source_url = excluded.source_url,
+  imported_at = excluded.imported_at,
+  author_location = excluded.author_location,
+  locale = excluded.locale,
+  include_in_rating = excluded.include_in_rating,
   created_at = excluded.created_at;
 
 -- Refresh denormalised rating summary after seeding reviews
