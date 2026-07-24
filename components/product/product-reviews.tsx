@@ -1,6 +1,7 @@
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, ExternalLink } from "lucide-react";
 
 import { StarRating } from "@/components/product/star-rating";
+import { getReviewSourceLabel } from "@/lib/reviews";
 import type { ProductReview } from "@/lib/supabase/types";
 
 function formatReviewDate(value: string) {
@@ -8,6 +9,32 @@ function formatReviewDate(value: string) {
     month: "short",
     year: "numeric",
   }).format(new Date(value));
+}
+
+function ReviewSourceBadge({ review }: { review: ProductReview }) {
+  const label = getReviewSourceLabel(review.source);
+
+  if (review.source === "native" || review.source === "manual") {
+    return null;
+  }
+
+  if (review.source_url) {
+    return (
+      <a
+        href={review.source_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 text-xs font-medium text-inkjet hover:underline"
+      >
+        {label}
+        <ExternalLink className="size-3" aria-hidden="true" />
+      </a>
+    );
+  }
+
+  return (
+    <span className="text-xs font-medium text-inkjet">{label}</span>
+  );
 }
 
 export function ProductReviews({
@@ -52,8 +79,12 @@ export function ProductReviews({
                     Verified buyer
                   </span>
                 ) : null}
+                <ReviewSourceBadge review={review} />
                 <span className="text-xs text-slate-grey">
-                  {review.author_name} · {formatReviewDate(review.created_at)}
+                  {review.author_name}
+                  {review.author_location ? ` · ${review.author_location}` : ""}
+                  {" · "}
+                  {formatReviewDate(review.created_at)}
                 </span>
               </div>
               {review.title ? (

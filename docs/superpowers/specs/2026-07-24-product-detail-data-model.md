@@ -99,7 +99,7 @@ Curated merchandising links between products.
 
 ### `product_reviews`
 
-Customer reviews displayed on the PDP. Summary fields `products.rating` and `products.review_count` are denormalised and refreshed by a database trigger.
+Customer reviews displayed on the PDP from **multiple sources**. Summary fields `products.rating` and `products.review_count` are denormalised and refreshed by a database trigger (only `published` + `include_in_rating` rows count).
 
 | Column | Type | Notes |
 |--------|------|-------|
@@ -109,11 +109,31 @@ Customer reviews displayed on the PDP. Summary fields `products.rating` and `pro
 | `title` | text | Optional headline |
 | `body` | text | Review text |
 | `author_name` | text | Display name |
-| `verified_purchase` | boolean | Show "Verified buyer" badge |
+| `verified_purchase` | boolean | Show "Verified buyer" badge (typically `native` only) |
 | `published` | boolean | Moderation gate |
-| `created_at` | timestamptz | |
+| `source` | enum | `native`, `import`, `google`, `trustpilot`, `yotpo`, `feefo`, `productreview`, `manual` |
+| `external_id` | text | Source-system ID for dedup on re-import |
+| `source_url` | text | Link to original review (Google, Trustpilot, etc.) |
+| `imported_at` | timestamptz | When review was synced/imported |
+| `author_location` | text | Optional city/state |
+| `locale` | text | Default `en-AU` |
+| `include_in_rating` | boolean | Display review but exclude from aggregate if `false` |
+| `created_at` | timestamptz | Original review date |
 
-**Import columns:** `sku`, `rating`, `title`, `body`, `author_name`, `verified_purchase`, `date`
+**Deduplication:** unique on `(source, external_id)` when `external_id` is set.
+
+| Source | When to use |
+|--------|-------------|
+| `native` | Post-purchase reviews on BDK Supply (Phase 4) |
+| `import` | Bulk CSV / spreadsheet import |
+| `google` | Google Business / Maps reviews |
+| `trustpilot` | Trustpilot syndication |
+| `yotpo` | Yotpo API sync |
+| `feefo` | Feefo import |
+| `productreview` | productreview.com.au |
+| `manual` | Admin-entered testimonials |
+
+**Import columns:** `sku`, `source`, `external_id`, `rating`, `title`, `body`, `author_name`, `author_location`, `verified_purchase`, `source_url`, `review_date`, `include_in_rating`
 
 Reviews are optional per product — products with no rows show the rating summary only (if set) or an empty state.
 
@@ -144,7 +164,7 @@ All four tables have public `SELECT` policies scoped to active products (and `pu
 | variants | parent_sku, variant_sku, finish, price, swatch_hex, image_url |
 | specifications | sku, group, label, value |
 | relations | source_sku, related_sku, relation_type |
-| reviews | sku, rating, title, body, author_name, verified, date |
+| reviews | sku, source, external_id, rating, title, body, author_name, author_location, verified, source_url, review_date |
 
 ---
 

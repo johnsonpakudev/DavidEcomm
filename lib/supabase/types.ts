@@ -7,6 +7,16 @@ export type ProductBadge = "best_seller" | "new" | "sale" | null;
 
 export type ProductRelationType = "related" | "cross_sell" | "upsell";
 
+export type ProductReviewSource =
+  | "native"
+  | "import"
+  | "google"
+  | "trustpilot"
+  | "yotpo"
+  | "feefo"
+  | "productreview"
+  | "manual";
+
 export interface Category {
   id: string;
   name: string;
@@ -77,6 +87,13 @@ export interface ProductReview {
   author_name: string;
   verified_purchase: boolean;
   published: boolean;
+  source: ProductReviewSource;
+  external_id: string | null;
+  source_url: string | null;
+  imported_at: string | null;
+  author_location: string | null;
+  locale: string;
+  include_in_rating: boolean;
   created_at: string;
 }
 
