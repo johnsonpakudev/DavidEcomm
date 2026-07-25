@@ -2,7 +2,7 @@
   "name": "davidecomm",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://bdksupply.com.au",
+  "homepage": "https://david-ecomm.vercel.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

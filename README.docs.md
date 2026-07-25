@@ -1,8 +1,8 @@
 # DavidEcomm
 
-Custom e-commerce platform for **[BDK Supply](https://bdksupply.com.au)** — building and renovation supplies.
+Custom e-commerce platform for **[BDK Supply](https://david-ecomm.vercel.app)** — building and renovation supplies.
 
-**Website:** [bdksupply.com.au](https://bdksupply.com.au)
+**Website:** [david-ecomm.vercel.app](https://david-ecomm.vercel.app)
 
 ## Documentation
 

@@ -3,7 +3,7 @@ export const brand = {
   tagline: "Construction Solutions",
   description:
     "Building and renovation supplies for homeowners, renovators, and industry professionals across Australia.",
-  url: "https://bdksupply.com.au",
+  url: "https://david-ecomm.vercel.app",
   logo: {
     dark: "/logo/bdk-logo-dark.png",
     light: "/logo/bdk-logo-light.png",

@@ -1,8 +1,8 @@
 # DavidEcomm
 
-Custom e-commerce platform for **[BDK Supply](https://bdksupply.com.au)** — building and renovation supplies for bathrooms, doors & hardware, and kitchen & laundry.
+Custom e-commerce platform for **[BDK Supply](https://david-ecomm.vercel.app)** — building and renovation supplies for bathrooms, doors & hardware, and kitchen & laundry.
 
-**Website:** [bdksupply.com.au](https://bdksupply.com.au)
+**Website:** [david-ecomm.vercel.app](https://david-ecomm.vercel.app)
 
 ## Documentation
 
@@ -22,7 +22,7 @@ npm run dev
 
 The Phase 1 storefront is designed to work without any Supabase environment variables. When `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are missing, the app falls back to the comprehensive mock catalog in `lib/mock/data.ts`.
 
-Set `NEXT_PUBLIC_SITE_URL=https://bdksupply.com.au` in production (Vercel) so metadata, sitemaps, and checkout redirects use the live domain.
+Set `NEXT_PUBLIC_SITE_URL=https://david-ecomm.vercel.app` in production (Vercel) so metadata, sitemaps, and checkout redirects use the live domain.
 
 ## Useful scripts
 
