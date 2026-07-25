@@ -1,6 +1,8 @@
 # DavidEcomm
 
-Premium fixtures e-commerce platform.
+Custom e-commerce platform for **[BDK Supply](https://bdksupply.com.au)** — building and renovation supplies.
+
+**Website:** [bdksupply.com.au](https://bdksupply.com.au)
 
 ## Documentation
 

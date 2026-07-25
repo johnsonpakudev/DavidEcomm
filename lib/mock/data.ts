@@ -1082,15 +1082,12 @@ export const mockFooterLinks: FooterLink[] = [
 ];
 
 export const mockSiteConfig: SiteConfig = {
-  promo_text: "Free shipping Australia wide on selected items",
-  phone: "1300 123 456",
-  email: "hello@davidecomm.com.au",
-  address: "Suite 4, 285 Collins Street, Melbourne VIC 3000",
+  promo_text: "Direct from the manufacturer, to you.",
+  phone: "0412 615 143",
+  email: "orders@bdksupply.com.au",
+  address: "27A Coolibar Street, Canley Heights NSW 2166",
   trading_hours: "Mon-Fri 9am-5pm AEST",
-  social_links: {
-    instagram: "https://instagram.com/davidecomm",
-    facebook: "https://facebook.com/davidecomm",
-  },
+  social_links: {},
 };
 
 export const mockCollectionDescriptions: Record<string, string> = {
