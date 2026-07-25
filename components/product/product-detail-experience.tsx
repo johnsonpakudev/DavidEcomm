@@ -12,6 +12,7 @@ import { StarRating } from "@/components/product/star-rating";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics/track";
 import { isCheckoutEnabled } from "@/lib/config/features";
+import { sanitizeProductDescription } from "@/lib/product-description";
 import type { ProductDetail, ProductVariant } from "@/lib/supabase/types";
 
 export function ProductDetailExperience({
@@ -33,6 +34,11 @@ export function ProductDetailExperience({
   );
 
   const displayPrice = selectedVariant?.price ?? product.price;
+  const sanitizedDescription = useMemo(
+    () =>
+      product.description ? sanitizeProductDescription(product.description) : "",
+    [product.description],
+  );
   const galleryImages = useMemo(() => {
     if (!selectedVariant?.image_url || !product.product_images?.length) {
       return product.product_images ?? [];
@@ -79,7 +85,7 @@ export function ProductDetailExperience({
         <div className="space-y-6">
           <div className="space-y-3">
             <p className="brand-eyebrow-dark">{product.brand}</p>
-            <h1 className="font-heading text-4xl text-tangaroa md:text-5xl">
+            <h1 className="font-heading text-2xl text-balance text-tangaroa sm:text-3xl lg:text-4xl">
               {product.name}
             </h1>
             <StarRating rating={product.rating} count={product.review_count} />
@@ -103,7 +109,12 @@ export function ProductDetailExperience({
               ))}
             </div>
           ) : null}
-          <p className="leading-7 text-slate-grey">{product.description}</p>
+          {sanitizedDescription ? (
+            <div
+              className="prose prose-sm max-w-none leading-7 text-slate-grey"
+              dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+            />
+          ) : null}
           <Button
             type="button"
             disabled={!checkoutEnabled}

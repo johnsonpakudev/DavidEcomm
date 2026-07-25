@@ -30,13 +30,13 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
         />
       </div>
       {images.length > 1 ? (
-        <div className="grid grid-cols-4 gap-3">
+        <div className="flex gap-3 overflow-x-auto pb-2">
           {images.map((image, index) => (
             <button
               key={image.id}
               type="button"
               className={cn(
-                "relative aspect-square overflow-hidden rounded-md border bg-gray-100",
+                "relative h-16 w-16 shrink-0 overflow-hidden rounded-md border bg-gray-100 sm:h-20 sm:w-20",
                 index === selectedImage
                   ? "border-inkjet ring-2 ring-inkjet/30"
                   : "border-gray-200",
@@ -47,7 +47,7 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
                 src={image.url}
                 alt={image.alt_text}
                 fill
-                sizes="120px"
+                sizes="80px"
                 className="object-cover"
               />
             </button>

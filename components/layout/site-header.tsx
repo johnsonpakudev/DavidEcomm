@@ -67,15 +67,31 @@ export async function SiteHeader() {
                         All {pillar.label}
                       </Link>
                       <div className="space-y-2">
-                        {pillar.children.map((child) => (
-                          <Link
-                            key={child.id}
-                            href={`/categories/${child.slug}`}
-                            className="block text-sm text-slate-grey"
-                          >
-                            {child.name}
-                          </Link>
-                        ))}
+                        {pillar.children.map((child) => {
+                          const grandChildren = categories
+                            .filter((category) => category.parent_id === child.id)
+                            .slice(0, 8);
+
+                          return (
+                            <div key={child.id} className="space-y-1">
+                              <Link
+                                href={`/categories/${child.slug}`}
+                                className="block text-sm text-slate-grey"
+                              >
+                                {child.name}
+                              </Link>
+                              {grandChildren.map((grandChild) => (
+                                <Link
+                                  key={grandChild.id}
+                                  href={`/categories/${grandChild.slug}`}
+                                  className="block pl-4 text-xs text-slate-grey"
+                                >
+                                  {grandChild.name}
+                                </Link>
+                              ))}
+                            </div>
+                          );
+                        })}
                       </div>
                     </AccordionContent>
                   </AccordionItem>

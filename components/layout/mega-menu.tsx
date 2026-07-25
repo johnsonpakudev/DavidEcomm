@@ -48,9 +48,10 @@ export function MegaMenu({
               (child) => child.slug === activeChildren[pillar.slug],
             ) ?? pillar.children[0];
           const visualChildren = selectedChild
-            ? categoryChildren
+            ? (categoryChildren
                 .get(selectedChild.id)
-                ?.sort((left, right) => left.mega_menu_order - right.mega_menu_order) ?? []
+                ?.sort((left, right) => left.mega_menu_order - right.mega_menu_order)
+                .slice(0, 8) ?? [])
             : [];
           const cards = visualChildren.length > 0 ? visualChildren : selectedChild ? [selectedChild] : [];
 
@@ -111,7 +112,7 @@ export function MegaMenu({
                           href={`/categories/${selectedChild.slug}`}
                           className="text-sm font-semibold uppercase tracking-[0.14em] text-tangaroa hover:text-inkjet"
                         >
-                          View category
+                          View all {selectedChild.name}
                         </Link>
                       ) : null}
                     </div>
@@ -122,7 +123,7 @@ export function MegaMenu({
                           href={`/categories/${card.slug}`}
                           className="group text-center"
                         >
-                          <div className="relative mx-auto aspect-square w-28 overflow-hidden rounded-full bg-saltwater-50">
+                          <div className="relative mx-auto flex aspect-square w-28 items-center justify-center overflow-hidden rounded-full bg-saltwater-50">
                             {card.mega_menu_image ? (
                               <Image
                                 src={card.mega_menu_image}
@@ -131,9 +132,17 @@ export function MegaMenu({
                                 sizes="112px"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                               />
-                            ) : null}
+                            ) : (
+                              <span className="px-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-grey">
+                                {card.name
+                                  .split(/\s+/)
+                                  .slice(0, 2)
+                                  .map((word) => word.charAt(0))
+                                  .join("")}
+                              </span>
+                            )}
                           </div>
-                          <p className="mt-3 text-sm font-medium text-tangaroa">
+                          <p className="mt-3 line-clamp-2 text-sm font-medium text-tangaroa">
                             {card.name}
                           </p>
                         </Link>
