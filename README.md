@@ -1,6 +1,8 @@
 # DavidEcomm
 
-Premium fixtures e-commerce platform.
+Custom e-commerce platform for **[BDK Supply](https://david-ecomm-johnson-dev1.vercel.app)** — building and renovation supplies for bathrooms, doors & hardware, and kitchen & laundry.
+
+**Website:** [david-ecomm-johnson-dev1.vercel.app](https://david-ecomm-johnson-dev1.vercel.app)
 
 ## Documentation
 
@@ -20,6 +22,8 @@ npm run dev
 
 The Phase 1 storefront is designed to work without any Supabase environment variables. When `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are missing, the app falls back to the comprehensive mock catalog in `lib/mock/data.ts`.
 
+Set `NEXT_PUBLIC_SITE_URL=https://david-ecomm-johnson-dev1.vercel.app` in production (Vercel) so metadata, sitemaps, and checkout redirects use the live domain.
+
 ## Useful scripts
 
 - `npm run dev` — start the Next.js app
@@ -28,6 +32,8 @@ The Phase 1 storefront is designed to work without any Supabase environment vari
 - `npm run test` — run Vitest unit tests
 - `npm run test:e2e` — run Playwright smoke tests
 - `npm run build` — production build using mock data unless Supabase env vars are configured
+- `npm run catalog:build` — transform BDK CSV export into JSON catalog
+- `npm run catalog:seed` — seed Supabase from generated catalog
 
 ## Supabase
 

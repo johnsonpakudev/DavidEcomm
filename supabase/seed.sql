@@ -1,12 +1,12 @@
 insert into site_config (id, promo_text, phone, email, address, trading_hours, social_links)
 values (
   1,
-  'Free shipping Australia wide on selected items',
-  '1300 123 456',
-  'hello@davidecomm.com.au',
-  'Suite 4, 285 Collins Street, Melbourne VIC 3000',
+  'Direct from the manufacturer, to you.',
+  '0412 615 143',
+  'orders@bdksupply.com.au',
+  '27A Coolibar Street, Canley Heights NSW 2166',
   'Mon-Fri 9am-5pm AEST',
-  '{"instagram":"https://instagram.com/davidecomm","facebook":"https://facebook.com/davidecomm"}'::jsonb
+  '{}'::jsonb
 )
 on conflict (id) do update set
   promo_text = excluded.promo_text,

@@ -1,12 +1,12 @@
-# DavidEcomm
-> Premium fixtures e-commerce for bathroom, doors & hardware, and kitchen & laundry.
+# BDK Supply
+> Building and renovation supplies for bathrooms, doors & hardware, and kitchen & laundry.
 
 ## API
-- OpenAPI: {SITE_URL}/api/v1/openapi.json
-- Products: {SITE_URL}/api/v1/products
-- Product feed: {SITE_URL}/api/feeds/products.json
-- Categories: {SITE_URL}/api/v1/categories
-- Search: {SITE_URL}/api/v1/search?q=vanity
+- OpenAPI: https://david-ecomm-johnson-dev1.vercel.app/api/v1/openapi.json
+- Products: https://david-ecomm-johnson-dev1.vercel.app/api/v1/products
+- Product feed: https://david-ecomm-johnson-dev1.vercel.app/api/feeds/products.json
+- Categories: https://david-ecomm-johnson-dev1.vercel.app/api/v1/categories
+- Search: https://david-ecomm-johnson-dev1.vercel.app/api/v1/search?q=vanity
 
 ## Notes
 - Prices are represented in Australian cents.
