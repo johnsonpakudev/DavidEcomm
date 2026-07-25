@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 
 import { getJsonCategories } from "@/lib/catalog/loader";
+import { useJsonCatalog } from "@/lib/catalog/source";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Category } from "@/lib/supabase/types";
 
@@ -24,6 +25,10 @@ async function fetchSupabaseCategories() {
 }
 
 export async function getCategories() {
+  if (useJsonCatalog()) {
+    return getJsonCategories();
+  }
+
   const categories = await fetchSupabaseCategories();
 
   return categories ?? getJsonCategories();

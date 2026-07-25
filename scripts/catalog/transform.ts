@@ -39,6 +39,26 @@ function mapRowAttributes(row: CsvProductRow): Record<string, string> {
     attributes.colour = row.Colour.trim();
   }
 
+  if (row["Product Weight"]?.trim()) {
+    attributes.product_weight = row["Product Weight"].trim();
+  }
+
+  if (row["Shipping Length"]?.trim()) {
+    attributes.shipping_length_cm = row["Shipping Length"].trim();
+  }
+
+  if (row["Shipping Width"]?.trim()) {
+    attributes.shipping_width_cm = row["Shipping Width"].trim();
+  }
+
+  if (row["Shipping Height"]?.trim()) {
+    attributes.shipping_height_cm = row["Shipping Height"].trim();
+  }
+
+  if (row["Shipping Package Type"]?.trim()) {
+    attributes.package_type = row["Shipping Package Type"].trim();
+  }
+
   return attributes;
 }
 

@@ -1,7 +1,11 @@
 import type { CartLineRequest } from "@/lib/cart/types";
+import { getJsonProducts } from "@/lib/catalog/loader";
+import { shippingFromProductAttributes } from "@/lib/catalog/shipping";
+import { useJsonCatalog } from "@/lib/catalog/source";
 import { normalizePackageType } from "@/lib/shipping/estimate";
 import type { ShippingLineInput } from "@/lib/shipping/estimate";
 import { createServiceClient } from "@/lib/supabase/admin";
+import type { Product } from "@/lib/supabase/types";
 
 export interface ValidatedCartLine {
   productId: string;
@@ -26,19 +30,40 @@ export async function validateCartItems(
     throw new Error("Your cart is empty.");
   }
 
+  if (useJsonCatalog()) {
+    return validateJsonCartItems(items);
+  }
+
+  return validateSupabaseCartItems(items);
+}
+
+async function validateJsonCartItems(
+  items: CartLineRequest[],
+): Promise<ValidatedCart> {
+  const products = await getJsonProducts();
+  const productById = new Map(products.map((product) => [product.id, product]));
+
+  return buildValidatedCart(items, (item) => {
+    const product = productById.get(item.product_id);
+
+    if (!product || !product.active) {
+      throw new Error("A product in your cart is no longer available.");
+    }
+
+    return resolveLineFromProduct(product, item);
+  });
+}
+
+async function validateSupabaseCartItems(
+  items: CartLineRequest[],
+): Promise<ValidatedCart> {
   const supabase = createServiceClient();
 
   if (!supabase) {
     throw new Error("Checkout is unavailable right now.");
   }
 
-  const lines: ValidatedCartLine[] = [];
-
-  for (const item of items) {
-    if (item.quantity < 1) {
-      continue;
-    }
-
+  return buildValidatedCart(items, async (item) => {
     const { data: product, error: productError } = await supabase
       .from("products")
       .select(
@@ -84,7 +109,7 @@ export async function validateCartItems(
       }
     }
 
-    lines.push({
+    return {
       productId: product.id,
       variantId: item.variant_id ?? null,
       quantity: item.quantity,
@@ -93,7 +118,58 @@ export async function validateCartItems(
       sku,
       unitPriceCents,
       shipping,
-    });
+    };
+  });
+}
+
+function resolveLineFromProduct(
+  product: Product,
+  item: CartLineRequest,
+): ValidatedCartLine {
+  let variantName: string | null = null;
+  let sku = product.sku;
+  let unitPriceCents = product.price;
+
+  if (item.variant_id) {
+    const variant = product.product_variants?.find(
+      (entry) => entry.id === item.variant_id,
+    );
+
+    if (!variant || !variant.active) {
+      throw new Error("A selected product option is no longer available.");
+    }
+
+    variantName = variant.name;
+    sku = variant.sku;
+    if (variant.price !== null) {
+      unitPriceCents = variant.price;
+    }
+  }
+
+  return {
+    productId: product.id,
+    variantId: item.variant_id ?? null,
+    quantity: item.quantity,
+    productName: product.name,
+    variantName,
+    sku,
+    unitPriceCents,
+    shipping: shippingFromProductAttributes(product.attributes, item.quantity),
+  };
+}
+
+async function buildValidatedCart(
+  items: CartLineRequest[],
+  resolveLine: (item: CartLineRequest) => ValidatedCartLine | Promise<ValidatedCartLine>,
+): Promise<ValidatedCart> {
+  const lines: ValidatedCartLine[] = [];
+
+  for (const item of items) {
+    if (item.quantity < 1) {
+      continue;
+    }
+
+    lines.push(await resolveLine(item));
   }
 
   if (!lines.length) {

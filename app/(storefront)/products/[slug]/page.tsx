@@ -10,6 +10,7 @@ import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/json-ld";
 import { buildProductMetadata, getSiteUrl } from "@/lib/seo/metadata";
 
 export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,

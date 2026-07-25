@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 
 import { getCachedCategories } from "@/lib/categories";
 import { getJsonProducts, getJsonSearchIndex } from "@/lib/catalog/loader";
+import { useJsonCatalog } from "@/lib/catalog/source";
 import { paginate, type PaginatedResult } from "@/lib/catalog/pagination";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Product, ProductBadge } from "@/lib/supabase/types";
@@ -146,7 +147,8 @@ async function filterJsonSearch(products: Product[], search: string) {
 }
 
 async function getFilteredProducts(filters: ProductFilters = {}) {
-  const supabaseProducts = await fetchSupabaseProducts(filters);
+  const preferJson = useJsonCatalog();
+  const supabaseProducts = preferJson ? null : await fetchSupabaseProducts(filters);
   const categoryIds = await getCategoryIdSet(filters.categorySlug);
   const baseProducts = supabaseProducts ?? (await getJsonProducts());
 
@@ -200,7 +202,7 @@ export async function getProductsPaginated(
 export async function getProductBySlug(slug: string) {
   const supabase = createPublicClient();
 
-  if (supabase) {
+  if (supabase && !useJsonCatalog()) {
     const { data, error } = await supabase
       .from("products")
       .select("*, product_images(*), categories(*)")
@@ -219,6 +221,10 @@ export async function getProductBySlug(slug: string) {
 }
 
 export function getCachedProductBySlug(slug: string) {
+  if (useJsonCatalog()) {
+    return getProductBySlug(slug);
+  }
+
   return unstable_cache(
     async () => getProductBySlug(slug),
     [`product-${slug}`],

@@ -4,6 +4,7 @@ import {
   getMockProductDetail,
   getMockProductDetailBySlug,
 } from "@/lib/mock/product-detail";
+import { useJsonCatalog } from "@/lib/catalog/source";
 import { getProductBySlug, getRelatedProducts } from "@/lib/products";
 import { createPublicClient } from "@/lib/supabase/server";
 import type {
@@ -155,6 +156,10 @@ export async function getProductDetailBySlug(slug: string) {
     return null;
   }
 
+  if (useJsonCatalog()) {
+    return buildJsonProductDetail(product);
+  }
+
   const supabase = createPublicClient();
 
   if (!supabase) {
@@ -181,6 +186,10 @@ export async function getProductDetailBySlug(slug: string) {
 }
 
 export function getCachedProductDetailBySlug(slug: string) {
+  if (useJsonCatalog()) {
+    return getProductDetailBySlug(slug);
+  }
+
   return unstable_cache(
     async () => getProductDetailBySlug(slug),
     [`product-detail-${slug}`],

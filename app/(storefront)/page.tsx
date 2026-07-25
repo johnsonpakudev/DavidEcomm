@@ -14,16 +14,28 @@ import { getProducts } from "@/lib/products";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [heroes, collections, inspirationImages, promos, featured, bestSellers, newArrivals] =
-    await Promise.all([
-      getHeroes(),
-      getCollections(),
-      getInspirationImages(),
-      getPromos(),
-      getProducts({ featured: true, limit: 4, sort: "featured" }),
-      getProducts({ badge: "best_seller", limit: 4, sort: "featured" }),
-      getProducts({ badge: "new", limit: 4, sort: "newest" }),
-    ]);
+  const [heroes, collections, inspirationImages, promos] = await Promise.all([
+    getHeroes(),
+    getCollections(),
+    getInspirationImages(),
+    getPromos(),
+  ]);
+
+  const [featured, bestSellers, newArrivals] = await Promise.all([
+    getProducts({ collection: "featured", limit: 4, sort: "featured" }).then(
+      (products) =>
+        products.length > 0
+          ? products
+          : getProducts({ limit: 4, sort: "featured" }),
+    ),
+    getProducts({ collection: "clearance", limit: 4, sort: "featured" }).then(
+      (products) =>
+        products.length > 0
+          ? products
+          : getProducts({ limit: 4, sort: "price-desc" }),
+    ),
+    getProducts({ limit: 4, sort: "newest" }),
+  ]);
 
   return (
     <>
@@ -32,7 +44,7 @@ export default async function HomePage() {
         products={featured}
         title="Featured products"
         subtitle={`Quality building and renovation supplies curated for the ${brand.name} point of view.`}
-        viewAllHref="/collections/premium"
+        viewAllHref="/categories/bathroom"
         ctaLabel="View collection"
         source="homepage-featured"
       />
@@ -43,7 +55,7 @@ export default async function HomePage() {
         products={bestSellers}
         title="Best sellers"
         subtitle="The most-loved products in our bathroom, hardware and utility collections."
-        viewAllHref="/collections/best-sellers"
+        viewAllHref="/collections/clearance"
         ctaLabel="View all"
         source="homepage-best-sellers"
       />
@@ -51,7 +63,7 @@ export default async function HomePage() {
         products={newArrivals}
         title="New arrivals"
         subtitle="Fresh additions across the three flagship navigation pillars."
-        viewAllHref="/collections/new"
+        viewAllHref="/categories/bathroom"
         ctaLabel="View arrivals"
         source="homepage-new-arrivals"
       />

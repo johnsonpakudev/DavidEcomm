@@ -1,7 +1,7 @@
 import type { NavPillarKey } from "@/lib/supabase/types";
 
 import type { CsvProductRow, NormalizedCategory } from "@/scripts/catalog/types";
-import { deterministicId, slugify } from "@/scripts/catalog/utils";
+import { dedupeSlug, deterministicId, slugify } from "@/scripts/catalog/utils";
 
 export const PILLAR_TAGS: Record<string, NavPillarKey> = {
   Bathroom: "bathroom",
@@ -157,6 +157,8 @@ export function buildCategoryTree(rows: CsvProductRow[]): {
   const categories: NormalizedCategory[] = [];
   const siblingOrderByParent = new Map<string, number>();
 
+  const usedSlugs = new Set<string>();
+
   for (const path of sortedPaths) {
     const id = deterministicId("category", path);
     categoryIdByPath.set(path, id);
@@ -171,7 +173,7 @@ export function buildCategoryTree(rows: CsvProductRow[]): {
     categories.push({
       id,
       name: pathName(path),
-      slug: slugify(pathName(path)),
+      slug: dedupeSlug(slugify(path), usedSlugs),
       parent_id: parent ? categoryIdByPath.get(parent) ?? null : null,
       nav_pillar: navPillarForPath(path),
       icon_key: null,

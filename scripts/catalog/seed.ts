@@ -48,10 +48,31 @@ function printManualInstructions(): void {
   console.log("Or set DATABASE_URL in .env and rerun `npm run catalog:seed`.");
 }
 
+function resolveDatabaseUrl(rawUrl: string): string {
+  try {
+    const url = new URL(rawUrl);
+
+    if (url.hostname.startsWith("db.") && url.hostname.endsWith(".supabase.co")) {
+      const projectRef = url.hostname.slice("db.".length, -".supabase.co".length);
+      url.username = `postgres.${projectRef}`;
+      url.hostname = "aws-0-ap-northeast-1.pooler.supabase.com";
+    }
+
+    return url.toString();
+  } catch {
+    return rawUrl;
+  }
+}
+
 async function seedWithPg(databaseUrl: string): Promise<void> {
   const { Client } = await import("pg");
   const files = discoverSqlFiles();
-  const client = new Client({ connectionString: databaseUrl });
+  const client = new Client({
+    connectionString: databaseUrl,
+    ssl: databaseUrl.includes("supabase")
+      ? { rejectUnauthorized: false }
+      : undefined,
+  });
 
   await client.connect();
 
@@ -76,7 +97,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  await seedWithPg(databaseUrl);
+  await seedWithPg(resolveDatabaseUrl(databaseUrl));
 }
 
 main().catch((error) => {
