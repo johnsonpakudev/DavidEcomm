@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Camera, Globe, Mail, MapPin, Phone } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand/brand-logo";
 import { brand } from "@/lib/brand";
 import { getFooterLinks, getSiteConfig } from "@/lib/homepage";
 
@@ -13,12 +14,10 @@ export async function SiteFooter() {
       <div className="site-shell py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-4">
-            <div>
-              <p className="font-heading text-3xl">{brand.name}</p>
-              <p className="mt-3 max-w-xs text-sm text-white/70">
-                Building and renovation supplies for bathrooms, kitchens, hardware and beautifully finished spaces.
-              </p>
-            </div>
+            <BrandLogo variant="light" href="/" />
+            <p className="max-w-xs text-sm text-white/70">
+              Building and renovation supplies for bathrooms, kitchens, hardware and beautifully finished spaces.
+            </p>
             <div className="flex items-center gap-3">
               {siteConfig.social_links.facebook ? (
                 <a
