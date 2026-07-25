@@ -4,7 +4,7 @@ import {
   getMockProductDetail,
   getMockProductDetailBySlug,
 } from "@/lib/mock/product-detail";
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug, getRelatedProducts } from "@/lib/products";
 import { createPublicClient } from "@/lib/supabase/server";
 import type {
   Product,
@@ -140,6 +140,14 @@ function buildProductDetail(
   };
 }
 
+async function buildJsonProductDetail(product: Product): Promise<ProductDetail> {
+  const variants = product.product_variants ?? [];
+  const specifications = product.product_specifications ?? [];
+  const relatedProducts = await getRelatedProducts(product);
+
+  return buildProductDetail(product, variants, specifications, [], [], relatedProducts);
+}
+
 export async function getProductDetailBySlug(slug: string) {
   const product = await getProductBySlug(slug);
 
@@ -150,7 +158,7 @@ export async function getProductDetailBySlug(slug: string) {
   const supabase = createPublicClient();
 
   if (!supabase) {
-    return getMockProductDetail(product);
+    return buildJsonProductDetail(product);
   }
 
   const [variants, specifications, reviews, crossSellProducts, relatedProducts] =

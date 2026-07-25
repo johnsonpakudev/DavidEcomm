@@ -1,8 +1,9 @@
 import { unstable_cache } from "next/cache";
 
 import { getCachedCategories } from "@/lib/categories";
-import { mockProducts } from "@/lib/mock/data";
-import { createClient, createPublicClient } from "@/lib/supabase/server";
+import { getJsonProducts, getJsonSearchIndex } from "@/lib/catalog/loader";
+import { paginate, type PaginatedResult } from "@/lib/catalog/pagination";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { Product, ProductBadge } from "@/lib/supabase/types";
 
 export interface ProductFilters {
@@ -11,6 +12,7 @@ export interface ProductFilters {
   collection?: string;
   categorySlug?: string;
   limit?: number;
+  page?: number;
   search?: string;
   sort?: "featured" | "price-asc" | "price-desc" | "newest";
 }
@@ -111,7 +113,7 @@ async function fetchSupabaseProducts(filters: ProductFilters) {
   return data as Product[];
 }
 
-function applyMockFilters(products: Product[], filters: ProductFilters) {
+function applyLocalFilters(products: Product[], filters: ProductFilters) {
   let items = [...products];
 
   if (filters.featured) {
@@ -131,12 +133,24 @@ function applyMockFilters(products: Product[], filters: ProductFilters) {
   return items;
 }
 
-export async function getProducts(filters: ProductFilters = {}) {
+async function filterJsonSearch(products: Product[], search: string) {
+  const query = search.toLowerCase();
+  const searchIndex = await getJsonSearchIndex();
+  const matchingIds = new Set(
+    searchIndex
+      .filter((entry) => entry.tokens.includes(query))
+      .map((entry) => entry.productId),
+  );
+
+  return products.filter((product) => matchingIds.has(product.id));
+}
+
+async function getFilteredProducts(filters: ProductFilters = {}) {
   const supabaseProducts = await fetchSupabaseProducts(filters);
   const categoryIds = await getCategoryIdSet(filters.categorySlug);
-  const baseProducts = supabaseProducts ?? mockProducts;
+  const baseProducts = supabaseProducts ?? (await getJsonProducts());
 
-  let items = applyMockFilters(baseProducts, filters);
+  let items = applyLocalFilters(baseProducts, filters);
 
   if (categoryIds) {
     items = items.filter(
@@ -145,27 +159,42 @@ export async function getProducts(filters: ProductFilters = {}) {
   }
 
   if (filters.search) {
-    const query = filters.search.toLowerCase();
+    if (supabaseProducts) {
+      items = items.filter((product) => {
+        const haystack = [
+          product.name,
+          product.description ?? "",
+          product.brand ?? "",
+          ...Object.values(product.attributes),
+        ]
+          .join(" ")
+          .toLowerCase();
 
-    items = items.filter((product) => {
-      const haystack = [
-        product.name,
-        product.description ?? "",
-        product.brand ?? "",
-        ...Object.values(product.attributes),
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return haystack.includes(query);
-    });
+        return haystack.includes(filters.search!.toLowerCase());
+      });
+    } else {
+      items = await filterJsonSearch(items, filters.search);
+    }
   }
 
-  const sorted = sortProducts(items, filters.sort ?? "newest");
+  return sortProducts(items, filters.sort ?? "newest");
+}
+
+export async function getProducts(filters: ProductFilters = {}) {
+  const items = await getFilteredProducts(filters);
 
   return typeof filters.limit === "number"
-    ? sorted.slice(0, filters.limit)
-    : sorted;
+    ? items.slice(0, filters.limit)
+    : items;
+}
+
+export async function getProductsPaginated(
+  filters: ProductFilters = {},
+): Promise<PaginatedResult<Product>> {
+  const { page = 1, limit = 24, ...rest } = filters;
+  const items = await getFilteredProducts(rest);
+
+  return paginate(items, page, limit);
 }
 
 export async function getProductBySlug(slug: string) {
@@ -184,7 +213,9 @@ export async function getProductBySlug(slug: string) {
     }
   }
 
-  return mockProducts.find((product) => product.slug === slug) ?? null;
+  const products = await getJsonProducts();
+
+  return products.find((product) => product.slug === slug) ?? null;
 }
 
 export function getCachedProductBySlug(slug: string) {

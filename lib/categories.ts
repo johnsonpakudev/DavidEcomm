@@ -1,6 +1,6 @@
 import { unstable_cache } from "next/cache";
 
-import { mockCategories } from "@/lib/mock/data";
+import { getJsonCategories } from "@/lib/catalog/loader";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Category } from "@/lib/supabase/types";
 
@@ -26,7 +26,7 @@ async function fetchSupabaseCategories() {
 export async function getCategories() {
   const categories = await fetchSupabaseCategories();
 
-  return categories ?? mockCategories;
+  return categories ?? getJsonCategories();
 }
 
 export const getCachedCategories = unstable_cache(getCategories, ["categories"], {
