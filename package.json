@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "catalog:build": "tsx scripts/catalog/build.ts",
+    "catalog:seed": "tsx scripts/catalog/seed.ts",
     "catalog:validate": "tsx scripts/catalog/build.ts --validate-only"
   },
   "dependencies": {
@@ -40,6 +41,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
+    "@types/pg": "^8.15.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.0.3",
@@ -47,6 +49,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "jsdom": "^29.1.1",
+    "pg": "^8.16.3",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5",
