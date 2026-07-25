@@ -33,11 +33,13 @@ export function buildDefaultMetadata(): Metadata {
       title: `${siteName} | ${brand.tagline}`,
       description: siteDescription,
       siteName,
+      images: [{ url: absoluteUrl(brand.logo.light) }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${siteName} | ${brand.tagline}`,
       description: siteDescription,
+      images: [absoluteUrl(brand.logo.light)],
     },
   };
 }

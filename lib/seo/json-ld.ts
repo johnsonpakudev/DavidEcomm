@@ -67,7 +67,7 @@ export function organizationJsonLd(siteUrl: string) {
     "@type": "Organization",
     name: brand.name,
     url: siteUrl,
-    logo: `${siteUrl}/favicon.ico`,
+    logo: `${siteUrl}${brand.logo.light}`,
   };
 }
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Menu, ShoppingCart, User } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand/brand-logo";
 import { HeaderSearch } from "@/components/layout/header-search";
 import { MegaMenu } from "@/components/layout/mega-menu";
 import { TopBar } from "@/components/layout/top-bar";
@@ -36,7 +37,8 @@ export async function SiteHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-sm overflow-y-auto p-0">
             <SheetHeader className="border-b border-saltwater">
-              <SheetTitle>Browse {brand.name}</SheetTitle>
+              <SheetTitle className="sr-only">Browse {brand.name}</SheetTitle>
+              <BrandLogo variant="dark" href="/" className="px-1" priority />
               <form action="/search" className="pt-4">
                 <label htmlFor="mobile-sheet-search" className="sr-only">
                   Search for products
@@ -82,14 +84,7 @@ export async function SiteHeader() {
           </SheetContent>
         </Sheet>
 
-        <Link href="/" className="shrink-0">
-          <div className="flex flex-col">
-            <span className="font-heading text-3xl text-tangaroa">{brand.name}</span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-inkjet">
-              {brand.tagline}
-            </span>
-          </div>
-        </Link>
+        <BrandLogo variant="dark" href="/" className="shrink-0" priority />
 
         <div className="hidden flex-1 justify-center md:flex">
           <HeaderSearch showMobile={false} />
