@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "catalog:build": "tsx scripts/catalog/build.ts",
+    "catalog:validate": "tsx scripts/catalog/build.ts --validate-only"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^6.8.0",
@@ -46,6 +48,7 @@
     "eslint-config-next": "16.2.10",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^4.1.10"
   }
