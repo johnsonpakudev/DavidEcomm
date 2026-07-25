@@ -11,12 +11,16 @@ import {
 } from "@/lib/checkout/validate-cart";
 import { isCheckoutEnabled } from "@/lib/config/features";
 import { estimateShipping } from "@/lib/shipping/estimate";
+import {
+  optionalPostgresUuidSchema,
+  postgresUuidSchema,
+} from "@/lib/validation/id";
 
 const estimateSchema = z.object({
   items: z.array(
     z.object({
-      product_id: z.string().uuid(),
-      variant_id: z.string().uuid().nullable().optional(),
+      product_id: postgresUuidSchema,
+      variant_id: optionalPostgresUuidSchema,
       quantity: z.number().int().positive(),
     }),
   ),

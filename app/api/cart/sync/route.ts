@@ -6,12 +6,16 @@ import type { CartLineRequest } from "@/lib/cart/types";
 import { SESSION_COOKIE_NAME } from "@/lib/cart/types";
 import { isCheckoutEnabled } from "@/lib/config/features";
 import { createServiceClient } from "@/lib/supabase/admin";
+import {
+  optionalPostgresUuidSchema,
+  postgresUuidSchema,
+} from "@/lib/validation/id";
 
 const syncSchema = z.object({
   items: z.array(
     z.object({
-      product_id: z.string().uuid(),
-      variant_id: z.string().uuid().nullable().optional(),
+      product_id: postgresUuidSchema,
+      variant_id: optionalPostgresUuidSchema,
       quantity: z.number().int().positive(),
     }),
   ),

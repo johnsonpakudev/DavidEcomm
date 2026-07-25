@@ -1,7 +1,7 @@
 # BDK Supply Catalog Integration — Design Specification
 
 **Date:** 2026-07-26  
-**Status:** Draft — pending user review  
+**Status:** Approved — 2026-07-26  
 **Project:** DavidEcomm  
 **Source data:** `public/data/BDKSUPPLY All Products.csv`  
 **Related:**

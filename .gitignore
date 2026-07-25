@@ -39,6 +39,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# supabase MCP seed temp artifacts
+supabase/.mcp-*
+supabase/.seed-part*
+supabase/.seed-chunk*
+supabase/.query-part1-only.sql
+
 # typescript
 *.tsbuildinfo
 !next-env.d.ts
