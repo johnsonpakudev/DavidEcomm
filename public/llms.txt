@@ -2,11 +2,11 @@
 > Building and renovation supplies for bathrooms, doors & hardware, and kitchen & laundry.
 
 ## API
-- OpenAPI: https://david-ecomm.vercel.app/api/v1/openapi.json
-- Products: https://david-ecomm.vercel.app/api/v1/products
-- Product feed: https://david-ecomm.vercel.app/api/feeds/products.json
-- Categories: https://david-ecomm.vercel.app/api/v1/categories
-- Search: https://david-ecomm.vercel.app/api/v1/search?q=vanity
+- OpenAPI: https://david-ecomm-johnson-dev1.vercel.app/api/v1/openapi.json
+- Products: https://david-ecomm-johnson-dev1.vercel.app/api/v1/products
+- Product feed: https://david-ecomm-johnson-dev1.vercel.app/api/feeds/products.json
+- Categories: https://david-ecomm-johnson-dev1.vercel.app/api/v1/categories
+- Search: https://david-ecomm-johnson-dev1.vercel.app/api/v1/search?q=vanity
 
 ## Notes
 - Prices are represented in Australian cents.
