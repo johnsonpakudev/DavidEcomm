@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { useCart } from "@/components/cart/cart-provider";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductReviews } from "@/components/product/product-reviews";
 import { ProductSpecifications } from "@/components/product/product-specifications";
@@ -9,6 +10,8 @@ import { ProductVariantPicker } from "@/components/product/product-variant-picke
 import { PriceDisplay } from "@/components/product/price-display";
 import { StarRating } from "@/components/product/star-rating";
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics/track";
+import { isCheckoutEnabled } from "@/lib/config/features";
 import type { ProductDetail, ProductVariant } from "@/lib/supabase/types";
 
 export function ProductDetailExperience({
@@ -16,6 +19,8 @@ export function ProductDetailExperience({
 }: {
   product: ProductDetail;
 }) {
+  const { addItem, subtotalCents } = useCart();
+  const checkoutEnabled = isCheckoutEnabled();
   const defaultVariant = useMemo(
     () =>
       product.variants.find((variant) => variant.is_default) ??
@@ -43,6 +48,29 @@ export function ProductDetailExperience({
       ...product.product_images.slice(1),
     ];
   }, [product.name, product.product_images, selectedVariant]);
+
+  function handleAddToCart() {
+    const unitPriceCents = selectedVariant?.price ?? product.price;
+
+    addItem({
+      productId: product.id,
+      variantId: selectedVariant?.id ?? null,
+      quantity: 1,
+      name: product.name,
+      variantName: selectedVariant?.name ?? null,
+      sku: selectedVariant?.sku ?? product.sku,
+      unitPriceCents,
+      imageUrl: galleryImages[0]?.url ?? null,
+      slug: product.slug,
+    });
+
+    void track("add_to_cart", {
+      product_id: product.id,
+      variant_id: selectedVariant?.id ?? null,
+      quantity: 1,
+      cart_value: (subtotalCents + unitPriceCents) / 100,
+    });
+  }
 
   return (
     <>
@@ -78,10 +106,11 @@ export function ProductDetailExperience({
           <p className="leading-7 text-slate-grey">{product.description}</p>
           <Button
             type="button"
-            disabled
+            disabled={!checkoutEnabled}
+            onClick={handleAddToCart}
             className="gold-cta h-12 w-full rounded-full disabled:cursor-not-allowed disabled:opacity-70"
           >
-            Add to cart coming soon
+            {checkoutEnabled ? "Add to cart" : "Add to cart coming soon"}
           </Button>
           <ProductReviews
             reviews={product.reviews}

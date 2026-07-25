@@ -111,6 +111,11 @@ export interface Product {
   meta_title: string | null;
   meta_description: string | null;
   og_image_url: string | null;
+  weight_kg?: number | null;
+  shipping_length_cm?: number | null;
+  shipping_width_cm?: number | null;
+  shipping_height_cm?: number | null;
+  package_type?: "envelope" | "carton" | "skid" | null;
   stock_quantity?: number;
   in_stock: boolean;
   active: boolean;
@@ -126,6 +131,72 @@ export interface Product {
   product_variants?: ProductVariant[];
   product_specifications?: ProductSpecification[];
   product_reviews?: ProductReview[];
+}
+
+export interface CartRecord {
+  id: string;
+  session_id: string;
+  user_id: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CartItemRecord {
+  id: string;
+  cart_id: string;
+  product_id: string;
+  variant_id: string | null;
+  quantity: number;
+}
+
+export interface OrderRecord {
+  id: string;
+  user_id: string | null;
+  guest_email: string;
+  guest_phone: string | null;
+  stripe_payment_intent_id: string | null;
+  status: "pending" | "paid" | "failed" | "refunded";
+  subtotal_cents: number;
+  shipping_cents: number;
+  tax_cents: number | null;
+  total_cents: number;
+  shipping_address: Record<string, string>;
+  shipping_method: string | null;
+  fulfillment_status: "paid" | "processing" | "shipped" | "delivered" | null;
+  shipping_zone: string | null;
+  shipping_disclaimer: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface OrderItemRecord {
+  id: string;
+  order_id: string;
+  product_id: string;
+  variant_id: string | null;
+  product_name: string;
+  variant_name: string | null;
+  sku: string;
+  quantity: number;
+  unit_price: number;
+}
+
+export interface ShippingZoneRecord {
+  id: string;
+  name: string;
+  slug: string;
+  postcode_ranges: Array<{ from: number; to: number }>;
+  countries: string[];
+}
+
+export interface ShippingRateRecord {
+  id: string;
+  zone_id: string;
+  package_type: "envelope" | "carton" | "skid";
+  min_weight_kg: number;
+  max_weight_kg: number | null;
+  rate_cents: number;
+  multi_item_surcharge_pct: number | null;
 }
 
 export interface ProductDetail extends Product {
@@ -246,6 +317,24 @@ export interface Database {
       };
       site_config: {
         Row: SiteConfig & { id?: number };
+      };
+      carts: {
+        Row: CartRecord;
+      };
+      cart_items: {
+        Row: CartItemRecord;
+      };
+      orders: {
+        Row: OrderRecord;
+      };
+      order_items: {
+        Row: OrderItemRecord;
+      };
+      shipping_zones: {
+        Row: ShippingZoneRecord;
+      };
+      shipping_rates: {
+        Row: ShippingRateRecord;
       };
     };
   };

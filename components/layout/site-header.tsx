@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Menu, ShoppingCart, User } from "lucide-react";
+import { Menu, User } from "lucide-react";
 
+import { CartNavLink } from "@/components/cart/cart-nav-link";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { HeaderSearch } from "@/components/layout/header-search";
 import { MegaMenu } from "@/components/layout/mega-menu";
@@ -97,14 +98,7 @@ export async function SiteHeader() {
               <User className="size-5" />
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="icon" aria-label="Cart">
-            <Link href="/cart" className="relative">
-              <ShoppingCart className="size-5" />
-              <span className="absolute -top-1 -right-1 inline-flex size-4 items-center justify-center rounded-full bg-inkjet text-[10px] text-white">
-                0
-              </span>
-            </Link>
-          </Button>
+          <CartNavLink />
         </div>
       </div>
       <div className="hidden bg-tangaroa lg:block">
