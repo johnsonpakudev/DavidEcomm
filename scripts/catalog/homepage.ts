@@ -3,9 +3,9 @@ import type {
   HomepageHero,
   HomepagePromo,
   InspirationImage,
-  NavPillarKey,
 } from "@/lib/supabase/types";
 
+import inspirationGallery from "@/scripts/catalog/inspiration-gallery.json";
 import type { ImportReport, NormalizedCategory, NormalizedProduct } from "@/scripts/catalog/types";
 import { deterministicId } from "@/scripts/catalog/utils";
 
@@ -243,107 +243,14 @@ function buildPromo(products: NormalizedProduct[]): HomepagePromo[] {
   ];
 }
 
-function categoryPillar(
-  categoryId: string | null,
-  categoriesById: Map<string, NormalizedCategory>,
-): NavPillarKey | null {
-  if (!categoryId) {
-    return null;
-  }
-
-  let current = categoriesById.get(categoryId);
-
-  while (current) {
-    if (current.nav_pillar) {
-      return current.nav_pillar;
-    }
-
-    current = current.parent_id
-      ? categoriesById.get(current.parent_id)
-      : undefined;
-  }
-
-  return null;
-}
-
-function pickInspirationForPillar(
-  products: NormalizedProduct[],
-  categories: NormalizedCategory[],
-  pillar: NavPillarKey,
-  usedProductIds: Set<string>,
-): NormalizedProduct | null {
-  const categoriesById = new Map(categories.map((category) => [category.id, category]));
-
-  return (
-    sortProductsForSelection(
-      products.filter((product) => {
-        if (!getPrimaryImage(product) || usedProductIds.has(product.id)) {
-          return false;
-        }
-
-        return categoryPillar(product.category_id, categoriesById) === pillar;
-      }),
-    )[0] ?? null
-  );
-}
-
-function buildInspiration(
-  products: NormalizedProduct[],
-  categories: NormalizedCategory[],
-  report: ImportReport,
-): InspirationImage[] {
-  const pillars: NavPillarKey[] = [
-    "bathroom",
-    "doors-hardware",
-    "kitchen-laundry",
-  ];
-  const usedProductIds = new Set<string>();
-  const inspiration: InspirationImage[] = [];
-
-  for (const pillar of pillars) {
-    const product = pickInspirationForPillar(
-      products,
-      categories,
-      pillar,
-      usedProductIds,
-    );
-
-    if (!product) {
-      report.warnings.push(`No inspiration image found for pillar: ${pillar}`);
-      continue;
-    }
-
-    usedProductIds.add(product.id);
-    inspiration.push({
-      id: deterministicId("inspiration", product.slug),
-      image_url: getPrimaryImage(product)!,
-      alt_text: product.name,
-      sort_order: inspiration.length,
-      active: true,
-    });
-  }
-
-  const featuredProduct =
-    productsInCollection(products, "featured").find(
-      (product) => !usedProductIds.has(product.id),
-    ) ??
-    productsInCollection(products, "bundle-deals").find(
-      (product) => !usedProductIds.has(product.id),
-    );
-
-  if (featuredProduct && getPrimaryImage(featuredProduct)) {
-    inspiration.push({
-      id: deterministicId("inspiration", featuredProduct.slug),
-      image_url: getPrimaryImage(featuredProduct)!,
-      alt_text: featuredProduct.name,
-      sort_order: inspiration.length,
-      active: true,
-    });
-  } else {
-    report.warnings.push("No fourth inspiration tile product found");
-  }
-
-  return inspiration;
+function buildInspiration(): InspirationImage[] {
+  return inspirationGallery.map((entry, index) => ({
+    id: entry.id,
+    image_url: entry.image_url,
+    alt_text: entry.alt_text,
+    sort_order: index,
+    active: true,
+  }));
 }
 
 export function buildHomepageManifest(input: {
@@ -357,7 +264,7 @@ export function buildHomepageManifest(input: {
     heroes: buildHeroes(products),
     promos: buildPromo(products),
     collections: buildCollections(products, report),
-    inspiration: buildInspiration(products, categories, report),
+    inspiration: buildInspiration(),
     categoryShortcuts: resolveCategoryShortcuts(categories, report),
   };
 }

@@ -17,7 +17,7 @@ export default async function InspirationPage() {
             Inspiration
           </h1>
           <p className="mt-4 max-w-2xl text-base text-slate-grey">
-            Explore styled spaces, premium finishes and product pairings across bathrooms, kitchens and laundries.
+            Styled bathrooms, doors, kitchens and laundries to inspire your next renovation project.
           </p>
         </section>
       </div>

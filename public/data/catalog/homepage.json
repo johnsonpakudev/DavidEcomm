@@ -74,31 +74,45 @@
   ],
   "inspiration": [
     {
-      "id": "e6b5837d-b5db-4166-943c-3a0f79fe6487",
-      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BAST90S.png?v=1759651356",
-      "alt_text": "Baiachi 115 x 115mm Square Tile Insert Floor Waste 90mm outlet Chrome",
+      "id": "insp-bathroom-vanity",
+      "image_url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      "alt_text": "Modern bathroom vanity and mirror styling",
       "sort_order": 0,
       "active": true
     },
     {
-      "id": "5a44dcff-e008-416f-a3f3-21fb6ffc9ec8",
-      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/030-820x2040.png?v=1759651238",
-      "alt_text": "Baiachi 820X2040X40mm 4 Lite Timber Veneer External Door Translucent Glass",
+      "id": "insp-bathroom-stone",
+      "image_url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "alt_text": "Bathroom renovation with stone finishes and tapware",
       "sort_order": 1,
       "active": true
     },
     {
-      "id": "5faf63a1-2c98-498e-8974-6bba052a0a7d",
-      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
-      "alt_text": "Baiachi 440X440mm Handmade Laundry Kitchen Sink Top/Under Mount Antique Bronze",
+      "id": "insp-doors-entry",
+      "image_url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "alt_text": "Contemporary home entrance with timber front door",
       "sort_order": 2,
       "active": true
     },
     {
-      "id": "25503a59-16ce-4ef9-b801-30954554827e",
-      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA7681copy.jpg?v=1759651300",
-      "alt_text": "Baiachi Florence 1500 Fluted Oval Freestanding Bath MK2",
+      "id": "insp-doors-interior",
+      "image_url": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1200&q=80",
+      "alt_text": "Interior renovation with doors and architectural detailing",
       "sort_order": 3,
+      "active": true
+    },
+    {
+      "id": "insp-kitchen-sink",
+      "image_url": "https://images.unsplash.com/photo-1564540583246-934409427776?auto=format&fit=crop&w=1200&q=80",
+      "alt_text": "Kitchen sink and benchtop renovation",
+      "sort_order": 4,
+      "active": true
+    },
+    {
+      "id": "insp-laundry",
+      "image_url": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=80",
+      "alt_text": "Laundry room with practical storage and fixtures",
+      "sort_order": 5,
       "active": true
     }
   ],

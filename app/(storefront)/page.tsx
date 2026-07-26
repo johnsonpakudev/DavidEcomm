@@ -67,7 +67,7 @@ export default async function HomePage() {
         ctaLabel="View arrivals"
         source="homepage-new-arrivals"
       />
-      <InspirationGrid images={inspirationImages.slice(0, 4)} title="Bathroom inspiration" />
+      <InspirationGrid images={inspirationImages.slice(0, 4)} title="Project inspiration" />
       <TrustBar />
       <NewsletterSignup />
       <ShopWithConfidence />

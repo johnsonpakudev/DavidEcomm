@@ -73,8 +73,10 @@ describe("buildHomepageManifest", () => {
       "bundle-deals",
     ]);
     expect(manifest.categoryShortcuts.length).toBeGreaterThan(0);
-    expect(manifest.inspiration.length).toBeGreaterThan(0);
-    expect(serialized).not.toContain("unsplash.com");
+    expect(manifest.inspiration.length).toBeGreaterThanOrEqual(4);
+    expect(manifest.inspiration.every((image) => image.image_url.includes("unsplash.com"))).toBe(
+      true,
+    );
     expect(serialized).toContain("cdn.shopify.com");
   });
 
