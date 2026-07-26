@@ -2,6 +2,7 @@ import groupOverridesJson from "@/scripts/catalog/product-groups.json";
 
 import { applyBestSellerFallback } from "@/scripts/catalog/best-sellers";
 import {
+  assignMegaMenuImages,
   buildCategoryTree,
   extractCollectionSlugs,
   pickPrimaryCategoryId,
@@ -170,6 +171,7 @@ export function buildCatalogFromRows(rows: CsvProductRow[]): NormalizedCatalog {
 
   const { categories, categoryIdByPath } = buildCategoryTree(rows);
   report.categoriesCreated = categories.length;
+  assignMegaMenuImages(categories, rows, categoryIdByPath);
 
   const groups = groupRows(rows, overrides);
   const usedSlugs = new Set<string>();

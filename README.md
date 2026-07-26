@@ -24,6 +24,20 @@ The Phase 1 storefront is designed to work without any Supabase environment vari
 
 Set `NEXT_PUBLIC_SITE_URL=https://david-ecomm-johnson-dev1.vercel.app` in production (Vercel) so metadata, sitemaps, and checkout redirects use the live domain.
 
+## Production launch checklist (Phase 1)
+
+Excludes Vercel env var wiring and PostHog — configure those in the Vercel dashboard separately.
+
+1. **Catalog** — run `npm run catalog:build` and deploy so `public/data/catalog/*.json` is current (2,744+ products).
+2. **Mega-menu** — curated at build time (`scripts/catalog/categories.ts`); verify with `npm run verify:production:local` (3 pillars, no `;` noise).
+3. **Supabase** — apply migrations `001`–`005` on the production project; keep `CATALOG_SOURCE=auto` until Phase 2.
+4. **Checkout** — leave `ENABLE_CHECKOUT=false` and `NEXT_PUBLIC_ENABLE_CHECKOUT=false` until Phase 2.
+5. **SEO** — confirm `/sitemap.xml`, `/robots.txt`, and JSON-LD on sample PDPs after deploy.
+6. **Smoke test** — `npm run verify:production` against the live URL (homepage, sitemap, sample PDPs).
+7. **CI** — `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run build` pass on `main`.
+
+See [Phase 1 Production Hardening Design](./docs/superpowers/specs/2026-07-26-phase-1-production-hardening-design.md) for full exit criteria.
+
 ## Useful scripts
 
 - `npm run dev` — start the Next.js app
@@ -34,6 +48,8 @@ Set `NEXT_PUBLIC_SITE_URL=https://david-ecomm-johnson-dev1.vercel.app` in produc
 - `npm run build` — production build using mock data unless Supabase env vars are configured
 - `npm run catalog:build` — transform BDK CSV export into JSON catalog
 - `npm run catalog:seed` — seed Supabase from generated catalog
+- `npm run verify:production` — HTTP smoke checks against the live site (homepage, sitemap, sample PDPs)
+- `npm run verify:production:local` — validate curated mega-menu and homepage category links in generated JSON
 
 ## Supabase
 

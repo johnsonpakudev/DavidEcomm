@@ -7,10 +7,19 @@ const pillarLabels: Record<NavPillarKey, string> = {
   "kitchen-laundry": "Kitchen & Laundry",
 };
 
+const NAV_PILLAR_KEYS = new Set<NavPillarKey>(Object.keys(pillarLabels) as NavPillarKey[]);
+
+function isNavPillarKey(value: string | null): value is NavPillarKey {
+  return value !== null && NAV_PILLAR_KEYS.has(value as NavPillarKey);
+}
+
 export async function getNavigationTree(): Promise<NavigationPillar[]> {
   const categories = await getCachedCategories();
   const pillars = categories.filter(
-    (category) => category.parent_id === null && category.nav_pillar,
+    (category) =>
+      category.parent_id === null &&
+      isNavPillarKey(category.nav_pillar) &&
+      category.show_in_mega_menu,
   );
 
   return pillars
@@ -22,7 +31,9 @@ export async function getNavigationTree(): Promise<NavigationPillar[]> {
       children: categories
         .filter(
           (category) =>
-            category.parent_id === pillar.id && category.show_in_mega_menu,
+            category.parent_id === pillar.id &&
+            category.show_in_mega_menu &&
+            !category.name.includes(";"),
         )
         .sort((left, right) => left.mega_menu_order - right.mega_menu_order),
     }));
