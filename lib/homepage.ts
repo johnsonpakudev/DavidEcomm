@@ -6,6 +6,7 @@ import {
   mockInspirationImages,
   mockSiteConfig,
 } from "@/lib/mock/data";
+import { getHomepageManifest } from "@/lib/homepage/manifest";
 import { createPublicClient } from "@/lib/supabase/server";
 import type {
   FooterLink,
@@ -39,6 +40,12 @@ async function selectAll<T>(table: string, orderBy?: string) {
 }
 
 export async function getHeroes() {
+  const manifest = getHomepageManifest();
+
+  if (manifest) {
+    return manifest.heroes.filter((hero) => hero.active ?? true);
+  }
+
   return (
     (await selectAll<HomepageHero>("homepage_heroes", "sort_order")) ??
     mockHomepageHeroes
@@ -46,12 +53,24 @@ export async function getHeroes() {
 }
 
 export async function getPromos() {
+  const manifest = getHomepageManifest();
+
+  if (manifest) {
+    return manifest.promos.filter((promo) => promo.active ?? true);
+  }
+
   return (
     (await selectAll<HomepagePromo>("homepage_promos")) ?? mockHomepagePromos
   ).filter((promo) => promo.active ?? true);
 }
 
 export async function getCollections() {
+  const manifest = getHomepageManifest();
+
+  if (manifest) {
+    return manifest.collections;
+  }
+
   return (
     (await selectAll<HomepageCollection>("homepage_collections", "sort_order")) ??
     mockHomepageCollections
@@ -59,10 +78,26 @@ export async function getCollections() {
 }
 
 export async function getInspirationImages() {
+  const manifest = getHomepageManifest();
+
+  if (manifest) {
+    return manifest.inspiration.filter((image) => image.active ?? true);
+  }
+
   return (
     (await selectAll<InspirationImage>("inspiration_images", "sort_order")) ??
     mockInspirationImages
   ).filter((image) => image.active ?? true);
+}
+
+export async function getCategoryShortcuts() {
+  const manifest = getHomepageManifest();
+
+  if (manifest) {
+    return manifest.categoryShortcuts;
+  }
+
+  return [];
 }
 
 export async function getFooterLinks() {
