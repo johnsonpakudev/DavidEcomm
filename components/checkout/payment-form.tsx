@@ -7,13 +7,9 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 
 import { Button } from "@/components/ui/button";
-
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : null;
+import { stripeAppearance, stripePromise } from "@/lib/stripe/browser";
 
 function PaymentStepForm({
   orderId,
@@ -91,12 +87,7 @@ export function PaymentForm({
       stripe={stripePromise}
       options={{
         clientSecret,
-        appearance: {
-          theme: "stripe",
-          variables: {
-            colorPrimary: "#0b1f33",
-          },
-        },
+        appearance: stripeAppearance,
       }}
     >
       <PaymentStepForm orderId={orderId} returnUrl={returnUrl} />

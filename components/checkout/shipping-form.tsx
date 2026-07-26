@@ -1,24 +1,67 @@
 "use client";
 
+import { forwardRef, useImperativeHandle } from "react";
+import { AddressElement, useElements } from "@stripe/react-stripe-js";
+
 import { Input } from "@/components/ui/input";
 import type { ShippingAddress } from "@/lib/cart/types";
+import { mapStripeAddressToShipping } from "@/lib/stripe/map-shipping-address";
 
-const AU_STATES = ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"];
+export type ShippingFormHandle = {
+  collectAddress: (
+    email: string,
+  ) => Promise<
+    { ok: true; address: ShippingAddress } | { ok: false; error: string }
+  >;
+};
 
-export function ShippingForm({
-  value,
-  onChange,
-}: {
-  value: ShippingAddress;
-  onChange: (next: ShippingAddress) => void;
-}) {
-  function updateField<K extends keyof ShippingAddress>(key: K, fieldValue: ShippingAddress[K]) {
-    onChange({ ...value, [key]: fieldValue });
+export const ShippingForm = forwardRef<
+  ShippingFormHandle,
+  {
+    email: string;
+    onEmailChange: (email: string) => void;
+    defaultAddress?: ShippingAddress | null;
   }
+>(function ShippingForm({ email, onEmailChange, defaultAddress }, ref) {
+  const elements = useElements();
+
+  useImperativeHandle(ref, () => ({
+    async collectAddress(emailValue: string) {
+      if (!elements) {
+        return { ok: false, error: "Address form is still loading. Please try again." };
+      }
+
+      const addressElement = elements.getElement(AddressElement);
+
+      if (!addressElement) {
+        return { ok: false, error: "Address form is unavailable." };
+      }
+
+      const { complete, value } = await addressElement.getValue();
+
+      if (!complete) {
+        return {
+          ok: false,
+          error: "Please select a complete delivery address from the suggestions.",
+        };
+      }
+
+      const address = mapStripeAddressToShipping(emailValue, value);
+
+      if (!address) {
+        return {
+          ok: false,
+          error: "Please provide a complete Australian delivery address and phone number.",
+        };
+      }
+
+      return { ok: true, address };
+    },
+  }));
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <div className="md:col-span-2">
+    <div className="space-y-6">
+      <div>
         <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="email">
           Email
         </label>
@@ -26,92 +69,48 @@ export function ShippingForm({
           id="email"
           type="email"
           autoComplete="email"
-          value={value.email}
-          onChange={(event) => updateField("email", event.target.value)}
+          value={email}
+          onChange={(event) => onEmailChange(event.target.value)}
           required
         />
       </div>
-      <div className="md:col-span-2">
-        <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="phone">
-          Phone
-        </label>
-        <Input
-          id="phone"
-          type="tel"
-          autoComplete="tel"
-          value={value.phone}
-          onChange={(event) => updateField("phone", event.target.value)}
-          required
-        />
-      </div>
-      <div className="md:col-span-2">
-        <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="line1">
-          Address line 1
-        </label>
-        <Input
-          id="line1"
-          autoComplete="address-line1"
-          value={value.line1}
-          onChange={(event) => updateField("line1", event.target.value)}
-          required
-        />
-      </div>
-      <div className="md:col-span-2">
-        <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="line2">
-          Address line 2
-        </label>
-        <Input
-          id="line2"
-          autoComplete="address-line2"
-          value={value.line2 ?? ""}
-          onChange={(event) => updateField("line2", event.target.value)}
-        />
-      </div>
+
       <div>
-        <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="suburb">
-          Suburb
-        </label>
-        <Input
-          id="suburb"
-          autoComplete="address-level2"
-          value={value.suburb}
-          onChange={(event) => updateField("suburb", event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="state">
-          State
-        </label>
-        <select
-          id="state"
-          value={value.state}
-          onChange={(event) => updateField("state", event.target.value)}
-          className="flex h-10 w-full rounded-md border border-saltwater bg-white px-3 text-sm"
-          required
-        >
-          <option value="">Select state</option>
-          {AU_STATES.map((state) => (
-            <option key={state} value={state}>
-              {state}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="mb-2 block text-sm font-semibold text-tangaroa" htmlFor="postcode">
-          Postcode
-        </label>
-        <Input
-          id="postcode"
-          inputMode="numeric"
-          autoComplete="postal-code"
-          value={value.postcode}
-          onChange={(event) => updateField("postcode", event.target.value)}
-          pattern="\d{4}"
-          required
+        <p className="mb-2 text-sm font-semibold text-tangaroa">Delivery address</p>
+        <p className="mb-4 text-sm text-slate-grey">
+          Start typing your address and select a match to ensure correct delivery.
+        </p>
+        <AddressElement
+          options={{
+            mode: "shipping",
+            allowedCountries: ["AU"],
+            autocomplete: {
+              mode: "automatic",
+            },
+            fields: {
+              phone: "always",
+            },
+            validation: {
+              phone: {
+                required: "always",
+              },
+            },
+            defaultValues: defaultAddress
+              ? {
+                  address: {
+                    line1: defaultAddress.line1,
+                    line2: defaultAddress.line2 ?? "",
+                    city: defaultAddress.suburb,
+                    state: defaultAddress.state,
+                    postal_code: defaultAddress.postcode,
+                    country: "AU",
+                  },
+                  phone: defaultAddress.phone,
+                }
+              : undefined,
+          }}
         />
       </div>
     </div>
   );
-}
+});
