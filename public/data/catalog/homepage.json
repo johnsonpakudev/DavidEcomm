@@ -1,0 +1,151 @@
+{
+  "heroes": [
+    {
+      "id": "e3d3ef26-9a5b-4b67-8a24-4aaf19e3cbbe",
+      "headline": "Direct from the manufacturer, to you.",
+      "subheadline": "Building and renovation supplies for bathrooms, doors, hardware and kitchen projects.",
+      "cta_text": "Shop best sellers",
+      "cta_href": "/collections/best-sellers",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
+      "sort_order": 0,
+      "active": true
+    },
+    {
+      "id": "16e09785-9a61-498f-a07b-71bf94df60c5",
+      "headline": "Baiachi 820X2040X40mm 4 Lite Timber Veneer External Door Translucent Glass",
+      "subheadline": "Explore tapware, vanities, doors and laundry essentials from trusted brands.",
+      "cta_text": "Shop bathroom",
+      "cta_href": "/categories/bathroom",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/030-820x2040.png?v=1759651238",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": "f7a546b5-b9f0-49cd-9837-3e8474675a3b",
+      "headline": "Baiachi 115 x 115mm Square Tile Insert Floor Waste 90mm outlet Chrome",
+      "subheadline": "Package offers and reduced lines across the BDK Supply catalog.",
+      "cta_text": "Shop bundle deals",
+      "cta_href": "/collections/bundle-deals",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BAST90S.png?v=1759651356",
+      "sort_order": 2,
+      "active": true
+    }
+  ],
+  "promos": [
+    {
+      "id": "promo-clearance",
+      "eyebrow": "Limited time savings",
+      "headline": "Clearance favourites",
+      "subtext": "Save on bathroom, door and laundry essentials while stocks last.",
+      "cta_text": "Shop clearance",
+      "cta_href": "/collections/clearance",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
+      "active": true
+    }
+  ],
+  "collections": [
+    {
+      "id": "c623cf49-bf68-4f48-9c99-285525225543",
+      "name": "Featured",
+      "slug": "featured",
+      "description": "Highlighted favourites from across the BDK Supply catalog.",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
+      "cta_text": "Shop featured",
+      "sort_order": 0
+    },
+    {
+      "id": "4ea930ac-ce32-4916-ad19-c623642da082",
+      "name": "Clearance",
+      "slug": "clearance",
+      "description": "Reduced lines across bathroom, doors and laundry while stocks last.",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
+      "cta_text": "Shop clearance",
+      "sort_order": 1
+    },
+    {
+      "id": "a5c85cf5-13e9-4521-a363-7fd451d8986f",
+      "name": "Bundle Deals",
+      "slug": "bundle-deals",
+      "description": "Package deals with the essentials bundled for faster renovation projects.",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/600.png?v=1759651239",
+      "cta_text": "Shop bundles",
+      "sort_order": 2
+    }
+  ],
+  "inspiration": [
+    {
+      "id": "e6b5837d-b5db-4166-943c-3a0f79fe6487",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BAST90S.png?v=1759651356",
+      "alt_text": "Baiachi 115 x 115mm Square Tile Insert Floor Waste 90mm outlet Chrome",
+      "sort_order": 0,
+      "active": true
+    },
+    {
+      "id": "5a44dcff-e008-416f-a3f3-21fb6ffc9ec8",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/030-820x2040.png?v=1759651238",
+      "alt_text": "Baiachi 820X2040X40mm 4 Lite Timber Veneer External Door Translucent Glass",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": "5faf63a1-2c98-498e-8974-6bba052a0a7d",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
+      "alt_text": "Baiachi 440X440mm Handmade Laundry Kitchen Sink Top/Under Mount Antique Bronze",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "id": "25503a59-16ce-4ef9-b801-30954554827e",
+      "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA7681copy.jpg?v=1759651300",
+      "alt_text": "Baiachi Florence 1500 Fluted Oval Freestanding Bath MK2",
+      "sort_order": 3,
+      "active": true
+    }
+  ],
+  "categoryShortcuts": [
+    {
+      "slug": "bathroom-vanities",
+      "iconKey": "vanities"
+    },
+    {
+      "slug": "bathroom-toilets",
+      "iconKey": "toilets"
+    },
+    {
+      "slug": "bathroom-basins",
+      "iconKey": "basins"
+    },
+    {
+      "slug": "bathroom-tapware",
+      "iconKey": "tapware"
+    },
+    {
+      "slug": "bathroom-showers",
+      "iconKey": "showers"
+    },
+    {
+      "slug": "bathroom-mirrors-cabinets",
+      "iconKey": "mirrors-cabinets"
+    },
+    {
+      "slug": "bathroom-accessories",
+      "iconKey": "accessories"
+    },
+    {
+      "slug": "doors-hardware-hardware-handles-locks",
+      "iconKey": "door-handles"
+    },
+    {
+      "slug": "kitchen-laundry-kitchen-laundry-sinks",
+      "iconKey": "kitchen-sinks"
+    },
+    {
+      "slug": "kitchen-laundry-laundry-tubs",
+      "iconKey": "laundry-tubs"
+    },
+    {
+      "slug": "doors-hardware-hardware-pull-handles",
+      "iconKey": "cabinet-handles"
+    }
+  ]
+}

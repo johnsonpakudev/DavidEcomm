@@ -4,11 +4,13 @@ test("homepage renders hero and featured products", async ({ page }) => {
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: /premium fixtures for the spaces that matter most/i }),
+    page.getByRole("heading", { name: /direct from the manufacturer, to you/i }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: /featured products/i }),
   ).toBeVisible();
+  await expect(page.locator('a[href^="/categories/bathroom-vanities"]').first()).toBeVisible();
+  await expect(page.locator("text=unsplash.com")).toHaveCount(0);
 });
 
 test("product page renders JSON-LD", async ({ page }) => {

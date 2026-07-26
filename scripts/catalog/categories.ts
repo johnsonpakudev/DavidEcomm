@@ -13,6 +13,7 @@ export const COLLECTION_TAGS: Record<string, string> = {
   Clearance: "clearance",
   Featured: "featured",
   "Bundle Deals": "bundle-deals",
+  "Best Sellers": "best-sellers",
 };
 
 function splitTags(tags: string): string[] {

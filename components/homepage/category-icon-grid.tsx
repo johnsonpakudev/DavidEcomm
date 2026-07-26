@@ -14,8 +14,9 @@ import {
 } from "lucide-react";
 
 import { brand } from "@/lib/brand";
-import { SectionHeading } from "@/components/product/section-heading";
 import { getCachedCategories } from "@/lib/categories";
+import { SectionHeading } from "@/components/product/section-heading";
+import { getCategoryShortcuts } from "@/lib/homepage";
 
 const iconMap = {
   vanities: Bath,
@@ -29,14 +30,27 @@ const iconMap = {
   "kitchen-sinks": House,
   "laundry-tubs": Boxes,
   "cabinet-handles": Wrench,
-};
-
-const featuredSlugs = Object.keys(iconMap);
+} as const;
 
 export async function CategoryIconGrid() {
-  const categories = await getCachedCategories();
-  const items = featuredSlugs
-    .map((slug) => categories.find((category) => category.slug === slug))
+  const [categories, shortcuts] = await Promise.all([
+    getCachedCategories(),
+    getCategoryShortcuts(),
+  ]);
+
+  const items = shortcuts
+    .map((shortcut) => {
+      const category = categories.find((entry) => entry.slug === shortcut.slug);
+
+      if (!category) {
+        return null;
+      }
+
+      return {
+        category,
+        iconKey: shortcut.iconKey,
+      };
+    })
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
   return (
@@ -48,18 +62,19 @@ export async function CategoryIconGrid() {
         />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-11">
           {items.map((item) => {
-            const Icon = iconMap[item.slug as keyof typeof iconMap];
+            const Icon =
+              iconMap[item.iconKey as keyof typeof iconMap] ?? Bath;
 
             return (
               <Link
-                key={item.id}
-                href={`/categories/${item.slug}`}
+                key={item.category.id}
+                href={`/categories/${item.category.slug}`}
                 className="group flex flex-col items-center gap-2 rounded-md border border-saltwater bg-white px-2 py-3 text-center transition-colors hover:border-warm-stone"
               >
                 <div className="flex size-11 items-center justify-center rounded-md border border-saltwater text-inkjet transition-colors group-hover:border-warm-stone group-hover:text-warm-stone-600 sm:size-12">
                   <Icon className="size-5 sm:size-6" />
                 </div>
-                <span className="text-xs leading-tight font-medium text-tangaroa">{item.name}</span>
+                <span className="text-xs leading-tight font-medium text-tangaroa">{item.category.name}</span>
               </Link>
             );
           })}

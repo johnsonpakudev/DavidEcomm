@@ -1,5 +1,6 @@
 import groupOverridesJson from "@/scripts/catalog/product-groups.json";
 
+import { applyBestSellerFallback } from "@/scripts/catalog/best-sellers";
 import {
   buildCategoryTree,
   extractCollectionSlugs,
@@ -190,6 +191,8 @@ export function buildCatalogFromRows(rows: CsvProductRow[]): NormalizedCatalog {
     slug: product.slug,
     tokens: buildSearchTokens(product),
   }));
+
+  applyBestSellerFallback(products, report);
 
   return {
     categories,

@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { buildHomepageManifest } from "@/scripts/catalog/homepage";
 import type {
   NormalizedCatalog,
   NormalizedProduct,
@@ -26,6 +27,12 @@ function serializeProduct(product: NormalizedProduct) {
 export function exportCatalogJson(catalog: NormalizedCatalog): void {
   mkdirSync(OUTPUT_DIR, { recursive: true });
 
+  const homepage = buildHomepageManifest({
+    products: catalog.products,
+    categories: catalog.categories,
+    report: catalog.report,
+  });
+
   writeFileSync(
     join(OUTPUT_DIR, "products.json"),
     `${JSON.stringify(catalog.products.map(serializeProduct), null, 2)}\n`,
@@ -39,6 +46,11 @@ export function exportCatalogJson(catalog: NormalizedCatalog): void {
   writeFileSync(
     join(OUTPUT_DIR, "search-index.json"),
     `${JSON.stringify(catalog.searchIndex, null, 2)}\n`,
+    "utf8",
+  );
+  writeFileSync(
+    join(OUTPUT_DIR, "homepage.json"),
+    `${JSON.stringify(homepage, null, 2)}\n`,
     "utf8",
   );
 }

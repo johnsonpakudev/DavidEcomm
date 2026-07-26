@@ -28,11 +28,11 @@ export default async function HomePage() {
           ? products
           : getProducts({ limit: 4, sort: "featured" }),
     ),
-    getProducts({ collection: "clearance", limit: 4, sort: "featured" }).then(
+    getProducts({ collection: "best-sellers", limit: 4, sort: "featured" }).then(
       (products) =>
         products.length > 0
           ? products
-          : getProducts({ limit: 4, sort: "price-desc" }),
+          : getProducts({ collection: "featured", limit: 4, sort: "featured" }),
     ),
     getProducts({ limit: 4, sort: "newest" }),
   ]);
@@ -55,7 +55,7 @@ export default async function HomePage() {
         products={bestSellers}
         title="Best sellers"
         subtitle="The most-loved products in our bathroom, hardware and utility collections."
-        viewAllHref="/collections/clearance"
+        viewAllHref="/collections/best-sellers"
         ctaLabel="View all"
         source="homepage-best-sellers"
       />
