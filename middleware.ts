@@ -1,11 +1,14 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { createAdminSessionToken } from "@/lib/admin/auth";
+import {
+  ADMIN_SESSION_COOKIE,
+  isValidAdminSessionToken,
+} from "@/lib/admin/session-token";
 
 const PUBLIC_ADMIN_PATHS = ["/admin/login"];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   if (process.env.ENABLE_ADMIN !== "true") {
     if (request.nextUrl.pathname.startsWith("/admin")) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -24,19 +27,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let expected: string;
-
-  try {
-    expected = createAdminSessionToken();
-  } catch {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
-  }
-
-  const token = request.cookies.get("bdk_admin_session")?.value;
-  const isAuthenticated =
-    Boolean(token) &&
-    token!.length === expected.length &&
-    token === expected;
+  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+  const isAuthenticated = await isValidAdminSessionToken(token);
 
   if (!isAuthenticated) {
     const loginUrl = new URL("/admin/login", request.url);

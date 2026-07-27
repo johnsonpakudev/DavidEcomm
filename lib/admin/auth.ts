@@ -1,24 +1,12 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
-
 import { cookies } from "next/headers";
 
 import { isAdminEnabled } from "@/lib/config/features";
-
-const COOKIE_NAME = "bdk_admin_session";
-
-function getSessionSecret() {
-  return process.env.ADMIN_SESSION_SECRET ?? process.env.PAYLOAD_SECRET ?? "";
-}
-
-export function createAdminSessionToken() {
-  const secret = getSessionSecret();
-
-  if (!secret) {
-    throw new Error("ADMIN_SESSION_SECRET or PAYLOAD_SECRET must be configured");
-  }
-
-  return createHmac("sha256", secret).update("bdk-admin").digest("hex");
-}
+import {
+  ADMIN_SESSION_COOKIE,
+  createAdminSessionToken,
+  isValidAdminSessionToken,
+  timingSafeEqualStrings,
+} from "@/lib/admin/session-token";
 
 export function verifyAdminPassword(password: string) {
   const expected = process.env.ADMIN_PASSWORD;
@@ -27,14 +15,7 @@ export function verifyAdminPassword(password: string) {
     return false;
   }
 
-  const left = Buffer.from(password);
-  const right = Buffer.from(expected);
-
-  if (left.length !== right.length) {
-    return false;
-  }
-
-  return timingSafeEqual(left, right);
+  return timingSafeEqualStrings(password, expected);
 }
 
 export async function isAdminAuthenticated() {
@@ -42,33 +23,15 @@ export async function isAdminAuthenticated() {
     return false;
   }
 
-  const secret = getSessionSecret();
-
-  if (!secret) {
-    return false;
-  }
-
   const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
-  const expected = createAdminSessionToken();
+  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
 
-  if (!token) {
-    return false;
-  }
-
-  const left = Buffer.from(token);
-  const right = Buffer.from(expected);
-
-  if (left.length !== right.length) {
-    return false;
-  }
-
-  return timingSafeEqual(left, right);
+  return isValidAdminSessionToken(token);
 }
 
 export async function setAdminSessionCookie() {
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, createAdminSessionToken(), {
+  cookieStore.set(ADMIN_SESSION_COOKIE, await createAdminSessionToken(), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -79,5 +42,5 @@ export async function setAdminSessionCookie() {
 
 export async function clearAdminSessionCookie() {
   const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
+  cookieStore.delete(ADMIN_SESSION_COOKIE);
 }
