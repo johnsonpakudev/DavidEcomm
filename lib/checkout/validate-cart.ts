@@ -1,7 +1,7 @@
 import type { CartLineRequest } from "@/lib/cart/types";
 import { getJsonProducts } from "@/lib/catalog/loader";
 import { shippingFromProductAttributes } from "@/lib/catalog/shipping";
-import { useJsonCatalog } from "@/lib/catalog/source";
+import { prefersJsonCatalog } from "@/lib/catalog/source";
 import { normalizePackageType } from "@/lib/shipping/estimate";
 import type { ShippingLineInput } from "@/lib/shipping/estimate";
 import { createServiceClient } from "@/lib/supabase/admin";
@@ -30,7 +30,7 @@ export async function validateCartItems(
     throw new Error("Your cart is empty.");
   }
 
-  if (useJsonCatalog()) {
+  if (prefersJsonCatalog()) {
     return validateJsonCartItems(items);
   }
 

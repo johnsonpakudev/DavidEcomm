@@ -28,7 +28,9 @@ test("product page renders JSON-LD", async ({ page }) => {
 
 test("category PLP shows paginated real products", async ({ page }) => {
   await page.goto("/categories/bathroom");
-  await expect(page.getByRole("heading", { name: /bathroom/i })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Bathroom", exact: true }),
+  ).toBeVisible();
   await expect(page.locator('[href^="/products/"]').first()).toBeVisible();
 });
 

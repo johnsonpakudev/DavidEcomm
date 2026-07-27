@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { hasJsonCatalog, useJsonCatalog } from "@/lib/catalog/source";
+import { hasJsonCatalog, prefersJsonCatalog } from "@/lib/catalog/source";
 
 describe("catalog source", () => {
   it("detects the built BDK catalog", () => {
@@ -10,14 +10,14 @@ describe("catalog source", () => {
   it("prefers json catalog in auto mode when file exists", () => {
     const original = process.env.CATALOG_SOURCE;
     process.env.CATALOG_SOURCE = "auto";
-    expect(useJsonCatalog()).toBe(true);
+    expect(prefersJsonCatalog()).toBe(true);
     process.env.CATALOG_SOURCE = original;
   });
 
   it("uses supabase when explicitly configured", () => {
     const original = process.env.CATALOG_SOURCE;
     process.env.CATALOG_SOURCE = "supabase";
-    expect(useJsonCatalog()).toBe(false);
+    expect(prefersJsonCatalog()).toBe(false);
     process.env.CATALOG_SOURCE = original;
   });
 });

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { useJsonCatalog } from "@/lib/catalog/source";
+import { prefersJsonCatalog } from "@/lib/catalog/source";
 import type { CategoryIconKey } from "@/lib/homepage/icon-keys";
 import type {
   HomepageCollection,
@@ -28,7 +28,7 @@ const MANIFEST_PATH = join(process.cwd(), "public/data/catalog/homepage.json");
 let manifestCache: HomepageManifest | null | undefined;
 
 export function getHomepageManifest(): HomepageManifest | null {
-  if (!useJsonCatalog()) {
+  if (!prefersJsonCatalog()) {
     return null;
   }
 
