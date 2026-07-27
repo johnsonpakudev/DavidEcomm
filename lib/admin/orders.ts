@@ -1,3 +1,5 @@
+import "server-only";
+
 import { createServiceClient } from "@/lib/supabase/admin";
 import type { OrderRecord } from "@/lib/supabase/types";
 
