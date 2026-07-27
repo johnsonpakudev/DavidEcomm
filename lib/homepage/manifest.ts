@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { useJsonCatalog } from "@/lib/catalog/source";
+import type { CategoryIconKey } from "@/lib/homepage/icon-keys";
 import type {
   HomepageCollection,
   HomepageHero,
@@ -11,7 +12,7 @@ import type {
 
 export interface CategoryShortcut {
   slug: string;
-  iconKey: string;
+  iconKey: CategoryIconKey;
 }
 
 export interface HomepageManifest {

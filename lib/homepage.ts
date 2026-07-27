@@ -6,7 +6,11 @@ import {
   mockInspirationImages,
   mockSiteConfig,
 } from "@/lib/mock/data";
+import { DEFAULT_PRODUCT_CAROUSELS } from "@/lib/homepage/defaults";
 import { getHomepageManifest } from "@/lib/homepage/manifest";
+import { mapHomepageManifest } from "@/lib/homepage/mapper";
+import { getHomepageFromCms } from "@/lib/homepage/payload";
+import type { MappedHomepage } from "@/lib/homepage/types";
 import { createPublicClient } from "@/lib/supabase/server";
 import type {
   FooterLink,
@@ -39,65 +43,100 @@ async function selectAll<T>(table: string, orderBy?: string) {
   return data as T[];
 }
 
-export async function getHeroes() {
+async function loadHomepageContent(): Promise<MappedHomepage> {
+  const cmsContent = await getHomepageFromCms();
+
+  if (cmsContent) {
+    return {
+      ...cmsContent,
+      productCarousels:
+        cmsContent.productCarousels.length > 0
+          ? cmsContent.productCarousels
+          : DEFAULT_PRODUCT_CAROUSELS,
+    };
+  }
+
   const manifest = getHomepageManifest();
 
   if (manifest) {
-    return manifest.heroes.filter((hero) => hero.active ?? true);
+    return {
+      ...mapHomepageManifest(manifest),
+      productCarousels: DEFAULT_PRODUCT_CAROUSELS,
+    };
   }
 
-  return (
-    (await selectAll<HomepageHero>("homepage_heroes", "sort_order")) ??
-    mockHomepageHeroes
-  ).filter((hero) => hero.active ?? true);
+  const [
+    heroes,
+    collections,
+    promos,
+    inspiration,
+  ] = await Promise.all([
+    selectAll<HomepageHero>("homepage_heroes", "sort_order"),
+    selectAll<HomepageCollection>("homepage_collections", "sort_order"),
+    selectAll<HomepagePromo>("homepage_promos"),
+    selectAll<InspirationImage>("inspiration_images", "sort_order"),
+  ]);
+
+  if (heroes || collections || promos || inspiration) {
+    return {
+      heroes: heroes ?? [],
+      collections: collections ?? [],
+      promos: promos ?? [],
+      inspiration: inspiration ?? [],
+      categoryShortcuts: [],
+      productCarousels: DEFAULT_PRODUCT_CAROUSELS,
+    };
+  }
+
+  return {
+    heroes: mockHomepageHeroes,
+    collections: mockHomepageCollections,
+    promos: mockHomepagePromos,
+    inspiration: mockInspirationImages,
+    categoryShortcuts: [],
+    productCarousels: DEFAULT_PRODUCT_CAROUSELS,
+  };
+}
+
+let homepageContentPromise: Promise<MappedHomepage> | null = null;
+
+function getHomepageContent() {
+  homepageContentPromise ??= loadHomepageContent();
+  return homepageContentPromise;
+}
+
+export async function getHomepageContentSnapshot() {
+  return getHomepageContent();
+}
+
+export async function getHeroes() {
+  const content = await getHomepageContent();
+  return content.heroes.filter((hero) => hero.active ?? true);
 }
 
 export async function getPromos() {
-  const manifest = getHomepageManifest();
-
-  if (manifest) {
-    return manifest.promos.filter((promo) => promo.active ?? true);
-  }
-
-  return (
-    (await selectAll<HomepagePromo>("homepage_promos")) ?? mockHomepagePromos
-  ).filter((promo) => promo.active ?? true);
+  const content = await getHomepageContent();
+  return content.promos.filter((promo) => promo.active ?? true);
 }
 
 export async function getCollections() {
-  const manifest = getHomepageManifest();
-
-  if (manifest) {
-    return manifest.collections;
-  }
-
-  return (
-    (await selectAll<HomepageCollection>("homepage_collections", "sort_order")) ??
-    mockHomepageCollections
-  );
+  const content = await getHomepageContent();
+  return content.collections;
 }
 
 export async function getInspirationImages() {
-  const manifest = getHomepageManifest();
-
-  if (manifest) {
-    return manifest.inspiration.filter((image) => image.active ?? true);
-  }
-
-  return (
-    (await selectAll<InspirationImage>("inspiration_images", "sort_order")) ??
-    mockInspirationImages
-  ).filter((image) => image.active ?? true);
+  const content = await getHomepageContent();
+  return content.inspiration.filter((image) => image.active ?? true);
 }
 
 export async function getCategoryShortcuts() {
-  const manifest = getHomepageManifest();
+  const content = await getHomepageContent();
+  return content.categoryShortcuts;
+}
 
-  if (manifest) {
-    return manifest.categoryShortcuts;
-  }
-
-  return [];
+export async function getProductCarousels() {
+  const content = await getHomepageContent();
+  return content.productCarousels;
 }
 
 export async function getFooterLinks() {

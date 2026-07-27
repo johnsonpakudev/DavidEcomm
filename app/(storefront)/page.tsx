@@ -7,67 +7,109 @@ import { PromoBanner } from "@/components/homepage/promo-banner";
 import { ShopWithConfidence } from "@/components/homepage/shop-with-confidence";
 import { TrustBar } from "@/components/homepage/trust-bar";
 import { ProductCarousel } from "@/components/product/product-carousel";
-import { brand } from "@/lib/brand";
-import { getHeroes, getCollections, getInspirationImages, getPromos } from "@/lib/homepage";
-import { getProducts } from "@/lib/products";
+import {
+  getCollections,
+  getHeroes,
+  getInspirationImages,
+  getProductCarousels,
+  getPromos,
+} from "@/lib/homepage";
+import type { ProductCarouselConfig } from "@/lib/homepage/types";
+import {
+  getActiveCarousels,
+  resolveCarouselProducts,
+} from "@/lib/homepage/resolve-carousel";
+import type { Product } from "@/lib/supabase/types";
 
 export const revalidate = 60;
 
-export default async function HomePage() {
-  const [heroes, collections, inspirationImages, promos] = await Promise.all([
-    getHeroes(),
-    getCollections(),
-    getInspirationImages(),
-    getPromos(),
-  ]);
+const CAROUSEL_LAYOUT_ORDER = [
+  "featured",
+  "best-sellers",
+  "new-arrivals",
+] as const;
 
-  const [featured, bestSellers, newArrivals] = await Promise.all([
-    getProducts({ collection: "featured", limit: 4, sort: "featured" }).then(
-      (products) =>
-        products.length > 0
-          ? products
-          : getProducts({ limit: 4, sort: "featured" }),
-    ),
-    getProducts({ collection: "best-sellers", limit: 4, sort: "featured" }).then(
-      (products) =>
-        products.length > 0
-          ? products
-          : getProducts({ collection: "featured", limit: 4, sort: "featured" }),
-    ),
-    getProducts({ limit: 4, sort: "newest" }),
-  ]);
+function sortCarouselsForLayout(carousels: ProductCarouselConfig[]) {
+  return [...carousels].sort((left, right) => {
+    const leftIndex = CAROUSEL_LAYOUT_ORDER.indexOf(left.key);
+    const rightIndex = CAROUSEL_LAYOUT_ORDER.indexOf(right.key);
+    return leftIndex - rightIndex;
+  });
+}
+
+function CarouselSection({
+  carousel,
+  products,
+}: {
+  carousel: ProductCarouselConfig;
+  products: Product[];
+}) {
+  return (
+    <ProductCarousel
+      products={products}
+      title={carousel.title}
+      subtitle={carousel.subtitle ?? undefined}
+      viewAllHref={carousel.viewAllHref ?? undefined}
+      ctaLabel={carousel.ctaLabel}
+      source={`homepage-${carousel.key}`}
+    />
+  );
+}
+
+export default async function HomePage() {
+  const [heroes, collections, inspirationImages, promos, carouselConfigs] =
+    await Promise.all([
+      getHeroes(),
+      getCollections(),
+      getInspirationImages(),
+      getPromos(),
+      getProductCarousels(),
+    ]);
+
+  const activeCarousels = sortCarouselsForLayout(
+    getActiveCarousels(carouselConfigs),
+  );
+  const carouselEntries = await Promise.all(
+    activeCarousels.map(async (carousel) => ({
+      carousel,
+      products: await resolveCarouselProducts(carousel),
+    })),
+  );
+  const carouselByKey = new Map(
+    carouselEntries.map((entry) => [entry.carousel.key, entry]),
+  );
+  const featured = carouselByKey.get("featured");
+  const bestSellers = carouselByKey.get("best-sellers");
+  const newArrivals = carouselByKey.get("new-arrivals");
 
   return (
     <>
       <HeroCarousel slides={heroes} />
-      <ProductCarousel
-        products={featured}
-        title="Featured products"
-        subtitle={`Quality building and renovation supplies curated for the ${brand.name} point of view.`}
-        viewAllHref="/categories/bathroom"
-        ctaLabel="View collection"
-        source="homepage-featured"
-      />
+      {featured ? (
+        <CarouselSection
+          carousel={featured.carousel}
+          products={featured.products}
+        />
+      ) : null}
       <CollectionCards collections={collections} />
       <CategoryIconGrid />
       <PromoBanner promo={promos[0] ?? null} />
-      <ProductCarousel
-        products={bestSellers}
-        title="Best sellers"
-        subtitle="The most-loved products in our bathroom, hardware and utility collections."
-        viewAllHref="/collections/best-sellers"
-        ctaLabel="View all"
-        source="homepage-best-sellers"
+      {bestSellers ? (
+        <CarouselSection
+          carousel={bestSellers.carousel}
+          products={bestSellers.products}
+        />
+      ) : null}
+      {newArrivals ? (
+        <CarouselSection
+          carousel={newArrivals.carousel}
+          products={newArrivals.products}
+        />
+      ) : null}
+      <InspirationGrid
+        images={inspirationImages.slice(0, 4)}
+        title="Project inspiration"
       />
-      <ProductCarousel
-        products={newArrivals}
-        title="New arrivals"
-        subtitle="Fresh additions across the three flagship navigation pillars."
-        viewAllHref="/categories/bathroom"
-        ctaLabel="View arrivals"
-        source="homepage-new-arrivals"
-      />
-      <InspirationGrid images={inspirationImages.slice(0, 4)} title="Project inspiration" />
       <TrustBar />
       <NewsletterSignup />
       <ShopWithConfidence />

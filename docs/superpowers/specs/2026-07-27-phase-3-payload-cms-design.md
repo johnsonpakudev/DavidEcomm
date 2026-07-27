@@ -1,7 +1,7 @@
 # Phase 3 — Payload CMS & Minimal CRM — Design Specification
 
 **Date:** 2026-07-27  
-**Status:** Draft — pending user review  
+**Status:** Implemented — 2026-07-27  
 **Project:** DavidEcomm (BDK Supply storefront)  
 **Related:**
 - [Infrastructure & CI Design](./2026-07-18-davidecomm-infra-ci-design.md)
