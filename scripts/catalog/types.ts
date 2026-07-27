@@ -51,7 +51,7 @@ export interface NormalizedProduct {
   active: boolean;
 }
 
-export interface NormalizedCategory extends Category {}
+export type NormalizedCategory = Category;
 
 export interface NormalizedCatalog {
   categories: NormalizedCategory[];

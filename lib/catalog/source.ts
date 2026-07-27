@@ -11,7 +11,7 @@ export function hasJsonCatalog(): boolean {
 }
 
 /** When true, products and categories load from the BDK CSV export, not Supabase seed data. */
-export function useJsonCatalog(): boolean {
+export function prefersJsonCatalog(): boolean {
   const source = process.env.CATALOG_SOURCE ?? "auto";
 
   if (source === "supabase") {
