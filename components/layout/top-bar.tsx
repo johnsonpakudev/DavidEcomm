@@ -1,4 +1,4 @@
-import { Clock3, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 
 import { getSiteConfig } from "@/lib/homepage";
 
@@ -15,12 +15,6 @@ export async function TopBar() {
               <Phone className="size-3.5" />
               <span>{siteConfig.phone}</span>
             </a>
-          ) : null}
-          {siteConfig.trading_hours ? (
-            <span className="inline-flex items-center gap-2">
-              <Clock3 className="size-3.5" />
-              <span>{siteConfig.trading_hours}</span>
-            </span>
           ) : null}
         </div>
       </div>
