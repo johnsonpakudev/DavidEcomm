@@ -5,4 +5,4 @@ portfolio:
   imageAlt: "Abstract AI neural network visualization"
   tags: [LangChain, RAG, Azure OpenAI, FastAPI, MCP]
   type: personal
-  featured: false
+  featured: true
