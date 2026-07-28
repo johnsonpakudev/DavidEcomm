@@ -1082,8 +1082,8 @@ export const mockFooterLinks: FooterLink[] = [
 ];
 
 export const mockSiteConfig: SiteConfig = {
-  promo_text: "Direct from the manufacturer, to you.",
-  phone: "0412 615 143",
+  promo_text: "SHIPPING AUSTRALIA WIDE*",
+  phone: "+61412615143",
   email: "orders@bdksupply.com.au",
   address: "27A Coolibar Street, Canley Heights NSW 2166",
   trading_hours: "Mon-Fri 9am-5pm AEST",

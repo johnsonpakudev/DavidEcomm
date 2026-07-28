@@ -1,8 +1,8 @@
 insert into site_config (id, promo_text, phone, email, address, trading_hours, social_links)
 values (
   1,
-  'Direct from the manufacturer, to you.',
-  '0412 615 143',
+  'SHIPPING AUSTRALIA WIDE*',
+  '+61412615143',
   'orders@bdksupply.com.au',
   '27A Coolibar Street, Canley Heights NSW 2166',
   'Mon-Fri 9am-5pm AEST',
