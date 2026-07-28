@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import { MarketingImage } from "@/components/homepage/marketing-image";
 import { MARKETING_ASSETS } from "@/lib/homepage/marketing-assets";
 
 export function ClearanceBanner() {
@@ -11,7 +11,7 @@ export function ClearanceBanner() {
           href="/collections/clearance"
           className="group block overflow-hidden rounded-md shadow-sm transition-shadow hover:shadow-md"
         >
-          <Image
+          <MarketingImage
             src={MARKETING_ASSETS.clearanceBanner}
             alt="On clearance"
             width={1920}

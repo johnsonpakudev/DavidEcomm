@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { MarketingImage } from "@/components/homepage/marketing-image";
 import { HOMEPAGE_COLLECTION_SECTIONS } from "@/lib/homepage/marketing-assets";
 
 export function CollectionCards() {
@@ -26,7 +26,7 @@ export function CollectionCards() {
                   href={`/collections/${collection.slug}`}
                   className="group relative block min-h-[360px] overflow-hidden rounded-md md:min-h-[420px]"
                 >
-                  <Image
+                  <MarketingImage
                     src={collection.imageUrl}
                     alt={collection.name}
                     fill

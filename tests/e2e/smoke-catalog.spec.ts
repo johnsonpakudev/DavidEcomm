@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("homepage renders hero and featured products", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.locator('img[src*="Carousel.png"]')).toBeVisible();
+  await expect(page.locator('img[src*="marketing/carousel"]')).toBeVisible();
   await expect(page.getByText(/australia wide shipping/i)).toBeVisible();
   await expect(
     page.getByRole("heading", { name: /shop by essentials/i }),
