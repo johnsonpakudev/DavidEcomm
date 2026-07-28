@@ -1,16 +1,18 @@
 import Link from "next/link";
 import {
   Bath,
-  Boxes,
-  Droplets,
+  CircleDot,
+  DoorClosed,
   DoorOpen,
+  Droplet,
+  Droplets,
   Grip,
-  House,
+  LayoutTemplate,
   ScanSearch,
   Shield,
-  Sparkles,
+  ShowerHead,
+  UtensilsCrossed,
   Waves,
-  Wrench,
 } from "lucide-react";
 
 import { brand } from "@/lib/brand";
@@ -19,17 +21,18 @@ import { SectionHeading } from "@/components/product/section-heading";
 import { getCategoryShortcuts } from "@/lib/homepage";
 
 const iconMap = {
-  vanities: Bath,
-  toilets: Shield,
-  basins: Droplets,
+  vanities: LayoutTemplate,
+  "bath-tubs": Bath,
+  "toilet-suites": Shield,
   tapware: Waves,
-  showers: Sparkles,
-  "mirrors-cabinets": ScanSearch,
-  accessories: Grip,
+  doors: DoorClosed,
+  "kitchen-sinks": UtensilsCrossed,
+  basins: Droplets,
+  mirrors: ScanSearch,
+  "shower-screens": ShowerHead,
+  "floor-wastes": CircleDot,
   "door-handles": DoorOpen,
-  "kitchen-sinks": House,
-  "laundry-tubs": Boxes,
-  "cabinet-handles": Wrench,
+  bidets: Droplet,
 } as const;
 
 export async function CategoryIconGrid() {
@@ -60,10 +63,10 @@ export async function CategoryIconGrid() {
           title="Shop by category"
           subtitle={`Explore the most-searched categories across the ${brand.name} catalog.`}
         />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-11">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-12">
           {items.map((item) => {
             const Icon =
-              iconMap[item.iconKey as keyof typeof iconMap] ?? Bath;
+              iconMap[item.iconKey as keyof typeof iconMap] ?? LayoutTemplate;
 
             return (
               <Link

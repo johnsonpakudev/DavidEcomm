@@ -384,16 +384,17 @@ export interface Homepage {
         slug: string;
         iconKey:
           | 'vanities'
-          | 'toilets'
-          | 'basins'
+          | 'bath-tubs'
+          | 'toilet-suites'
           | 'tapware'
-          | 'showers'
-          | 'mirrors-cabinets'
-          | 'accessories'
-          | 'door-handles'
+          | 'doors'
           | 'kitchen-sinks'
-          | 'laundry-tubs'
-          | 'cabinet-handles';
+          | 'basins'
+          | 'mirrors'
+          | 'shower-screens'
+          | 'floor-wastes'
+          | 'door-handles'
+          | 'bidets';
         id?: string | null;
       }[]
     | null;
