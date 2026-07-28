@@ -1,19 +1,18 @@
 import { CategoryIconGrid } from "@/components/homepage/category-icon-grid";
+import { ClearanceBanner } from "@/components/homepage/clearance-banner";
 import { CollectionCards } from "@/components/homepage/collection-cards";
 import { HeroCarousel } from "@/components/homepage/hero-carousel";
+import { HeroTrustBar } from "@/components/homepage/hero-trust-bar";
 import { InspirationGrid } from "@/components/homepage/inspiration-grid";
 import { NewsletterSignup } from "@/components/homepage/newsletter-signup";
-import { PromoBanner } from "@/components/homepage/promo-banner";
 import { ShopWithConfidence } from "@/components/homepage/shop-with-confidence";
 import { TrustBar } from "@/components/homepage/trust-bar";
 import { ProductCarousel } from "@/components/product/product-carousel";
 import {
-  getCollections,
-  getHeroes,
   getInspirationImages,
   getProductCarousels,
-  getPromos,
 } from "@/lib/homepage";
+import { MARKETING_HERO_SLIDE } from "@/lib/homepage/marketing-assets";
 import type { ProductCarouselConfig } from "@/lib/homepage/types";
 import {
   getActiveCarousels,
@@ -57,14 +56,10 @@ function CarouselSection({
 }
 
 export default async function HomePage() {
-  const [heroes, collections, inspirationImages, promos, carouselConfigs] =
-    await Promise.all([
-      getHeroes(),
-      getCollections(),
-      getInspirationImages(),
-      getPromos(),
-      getProductCarousels(),
-    ]);
+  const [inspirationImages, carouselConfigs] = await Promise.all([
+    getInspirationImages(),
+    getProductCarousels(),
+  ]);
 
   const activeCarousels = sortCarouselsForLayout(
     getActiveCarousels(carouselConfigs),
@@ -84,16 +79,19 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroCarousel slides={heroes} />
+      <div className="relative">
+        <HeroCarousel slides={[MARKETING_HERO_SLIDE]} imageOnly />
+        <HeroTrustBar className="sticky top-[104px] z-30 lg:top-[108px]" />
+      </div>
       {featured ? (
         <CarouselSection
           carousel={featured.carousel}
           products={featured.products}
         />
       ) : null}
-      <CollectionCards collections={collections} />
+      <CollectionCards />
       <CategoryIconGrid />
-      <PromoBanner promo={promos[0] ?? null} />
+      <ClearanceBanner />
       {bestSellers ? (
         <CarouselSection
           carousel={bestSellers.carousel}
