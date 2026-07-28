@@ -1094,6 +1094,7 @@ export const mockCollectionDescriptions: Record<string, string> = {
   premium: "Designer-led fixtures, elevated materials and signature detailing for premium renovations.",
   "best-value": "Practical, durable and renovation-ready pieces with standout value.",
   essential: "Reliable everyday fixtures and hardware that complete the room beautifully.",
+  clearance: "Reduced lines across bathroom, doors and laundry while stocks last.",
   "best-sellers": "The products customers come back for, from brass tapware to hardwearing sinks.",
   sale: "A rotating edit of reduced favourites across bathroom, doors and laundry.",
   new: "Recently added arrivals chosen to refresh your next renovation.",
