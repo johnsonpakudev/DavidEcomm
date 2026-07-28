@@ -1,9 +1,9 @@
 export const MARKETING_ASSETS = {
-  carousel: "/Carousel.png",
-  clearanceBanner: "/ON CLEARANCE.png",
-  essentialCard: "/Essential.png",
-  premiumCard: "/Premium.png",
-  valueCard: "/Value.png",
+  carousel: "/marketing/carousel.png",
+  clearanceBanner: "/marketing/on-clearance.png",
+  essentialCard: "/marketing/essential.png",
+  premiumCard: "/marketing/premium.png",
+  valueCard: "/marketing/value.png",
 } as const;
 
 export const HOMEPAGE_COLLECTION_SECTIONS = [

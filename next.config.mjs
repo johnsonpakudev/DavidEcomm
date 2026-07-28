@@ -21,6 +21,9 @@ const nextConfig = {
         pathname: "/logo/**",
       },
       {
+        pathname: "/marketing/**",
+      },
+      {
         pathname: "/**",
       },
     ],

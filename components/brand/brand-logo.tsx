@@ -39,6 +39,7 @@ export function BrandLogo({
       width={dimensions.width}
       height={dimensions.height}
       priority={priority}
+      unoptimized
       className={cn("h-auto w-auto max-h-12 object-contain", imageClassName)}
     />
   );
