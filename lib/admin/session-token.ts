@@ -1,3 +1,7 @@
+/**
+ * Edge-safe admin session helpers (Web Crypto only).
+ * Used by middleware — do not import Node built-ins here.
+ */
 export const ADMIN_SESSION_COOKIE = "bdk_admin_session";
 
 export function getSessionSecret() {
