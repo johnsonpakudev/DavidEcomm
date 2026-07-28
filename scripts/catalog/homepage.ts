@@ -24,16 +24,17 @@ export interface HomepageManifest {
 
 const CATEGORY_SHORTCUTS: CategoryShortcut[] = [
   { slug: "bathroom-vanities", iconKey: "vanities" },
-  { slug: "bathroom-toilets", iconKey: "toilets" },
-  { slug: "bathroom-basins", iconKey: "basins" },
+  { slug: "bathroom-baths", iconKey: "bath-tubs" },
+  { slug: "bathroom-toilets", iconKey: "toilet-suites" },
   { slug: "bathroom-tapware", iconKey: "tapware" },
-  { slug: "bathroom-showers", iconKey: "showers" },
-  { slug: "bathroom-mirrors-cabinets", iconKey: "mirrors-cabinets" },
-  { slug: "bathroom-accessories", iconKey: "accessories" },
-  { slug: "doors-hardware-hardware-handles-locks", iconKey: "door-handles" },
+  { slug: "doors-hardware", iconKey: "doors" },
   { slug: "kitchen-laundry-kitchen-laundry-sinks", iconKey: "kitchen-sinks" },
-  { slug: "kitchen-laundry-laundry-tubs", iconKey: "laundry-tubs" },
-  { slug: "doors-hardware-hardware-pull-handles", iconKey: "cabinet-handles" },
+  { slug: "bathroom-basins", iconKey: "basins" },
+  { slug: "bathroom-mirrors", iconKey: "mirrors" },
+  { slug: "bathroom-frameless-shower-screen", iconKey: "shower-screens" },
+  { slug: "bathroom-waste-drains-floor-wastes", iconKey: "floor-wastes" },
+  { slug: "doors-hardware-hardware-handles-locks", iconKey: "door-handles" },
+  { slug: "bathroom-toilets-bidet", iconKey: "bidets" },
 ];
 
 const COLLECTION_CARD_CONFIG: Array<{
