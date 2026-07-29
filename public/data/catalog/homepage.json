@@ -1,33 +1,51 @@
 {
   "heroes": [
     {
+      "id": "marketing-promo-carousel",
+      "layout": "promo",
+      "badge": "ON SPECIAL",
+      "brand_name": "Baiachi",
+      "headline": "Back-to-Wall Toilet",
+      "subheadline": "Modern design. Everyday comfort.",
+      "compare_at_price": 399,
+      "price": 279,
+      "cta_text": "Shop now",
+      "cta_href": "/categories/bathroom-toilets",
+      "image_url": "/Carousel.png",
+      "sort_order": 0,
+      "active": true
+    },
+    {
       "id": "e3d3ef26-9a5b-4b67-8a24-4aaf19e3cbbe",
+      "layout": "standard",
       "headline": "Direct from the manufacturer, to you.",
       "subheadline": "Building and renovation supplies for bathrooms, doors, hardware and kitchen projects.",
       "cta_text": "Shop best sellers",
       "cta_href": "/collections/best-sellers",
       "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BA4444R-ABcopy.jpg?v=1771204632",
-      "sort_order": 0,
+      "sort_order": 1,
       "active": true
     },
     {
       "id": "16e09785-9a61-498f-a07b-71bf94df60c5",
+      "layout": "standard",
       "headline": "Baiachi 820X2040X40mm 4 Lite Timber Veneer External Door Translucent Glass",
       "subheadline": "Explore tapware, vanities, doors and laundry essentials from trusted brands.",
       "cta_text": "Shop bathroom",
       "cta_href": "/categories/bathroom",
       "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/030-820x2040.png?v=1759651238",
-      "sort_order": 1,
+      "sort_order": 2,
       "active": true
     },
     {
       "id": "f7a546b5-b9f0-49cd-9837-3e8474675a3b",
+      "layout": "standard",
       "headline": "Baiachi 115 x 115mm Square Tile Insert Floor Waste 90mm outlet Chrome",
       "subheadline": "Package offers and reduced lines across the BDK Supply catalog.",
       "cta_text": "Shop bundle deals",
       "cta_href": "/collections/bundle-deals",
       "image_url": "https://cdn.shopify.com/s/files/1/0846/7074/2825/files/BAST90S.png?v=1759651356",
-      "sort_order": 2,
+      "sort_order": 3,
       "active": true
     }
   ],

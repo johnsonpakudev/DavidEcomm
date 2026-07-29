@@ -325,15 +325,44 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Homepage {
   id: number;
+  /**
+   * Homepage hero carousel. Choose Promo for product offer slides with badge, brand, pricing, and CTA over the background image.
+   */
   heroes?:
     | {
+        /**
+         * Promo matches the Baiachi toilet hero: left gradient, pricing, and feature icons.
+         */
+        layout: 'promo' | 'standard';
+        /**
+         * Product name for promo slides, or main headline for standard slides.
+         */
         headline: string;
+        /**
+         * Tagline for promo slides (e.g. Modern design. Everyday comfort.).
+         */
         subheadline?: string | null;
         ctaText?: string | null;
         ctaHref?: string | null;
+        /**
+         * Eyebrow pill above the brand name (e.g. ON SPECIAL).
+         */
+        badge?: string | null;
+        /**
+         * Large brand title shown above the product name.
+         */
+        brandName?: string | null;
+        /**
+         * Original price in whole dollars (e.g. 399 for $399).
+         */
+        compareAtPrice?: number | null;
+        /**
+         * Sale price in whole dollars (e.g. 279 for $279).
+         */
+        price?: number | null;
         image?: (number | null) | Media;
         /**
-         * Use for existing CDN URLs when not uploading a file.
+         * Background image URL. Use /Carousel.png for the bathroom hero photo.
          */
         externalImageUrl?: string | null;
         active?: boolean | null;
@@ -430,10 +459,15 @@ export interface HomepageSelect<T extends boolean = true> {
   heroes?:
     | T
     | {
+        layout?: T;
         headline?: T;
         subheadline?: T;
         ctaText?: T;
         ctaHref?: T;
+        badge?: T;
+        brandName?: T;
+        compareAtPrice?: T;
+        price?: T;
         image?: T;
         externalImageUrl?: T;
         active?: T;

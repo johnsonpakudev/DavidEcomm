@@ -186,6 +186,7 @@ function buildHeroes(products: NormalizedProduct[]): HomepageHero[] {
 
     return {
       id: deterministicId("hero", product.slug),
+      layout: "standard",
       headline: index === 0 ? copy.headline : product.name,
       subheadline: index === 0 ? copy.subheadline : copy.subheadline,
       cta_text: copy.ctaText,

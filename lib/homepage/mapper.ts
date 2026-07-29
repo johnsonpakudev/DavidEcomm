@@ -21,10 +21,15 @@ interface PayloadMediaRef {
 export interface PayloadHomepageGlobal {
   heroes?: Array<{
     id?: string | null;
+    layout?: string | null;
     headline?: string | null;
     subheadline?: string | null;
     ctaText?: string | null;
     ctaHref?: string | null;
+    badge?: string | null;
+    brandName?: string | null;
+    compareAtPrice?: number | null;
+    price?: number | null;
     image?: PayloadMediaRef | string | number | null;
     externalImageUrl?: string | null;
     active?: boolean | null;
@@ -96,6 +101,10 @@ function stableId(prefix: string, index: number, id?: string | null) {
   return id ?? `${prefix}-${index}`;
 }
 
+function parseHeroLayout(value: string | null | undefined): HomepageHero["layout"] {
+  return value === "promo" ? "promo" : "standard";
+}
+
 export function mapHero(
   slide: NonNullable<PayloadHomepageGlobal["heroes"]>[number],
   index: number,
@@ -106,8 +115,11 @@ export function mapHero(
     return null;
   }
 
+  const layout = parseHeroLayout(slide.layout);
+
   return {
     id: stableId("hero", index, slide.id),
+    layout,
     headline: slide.headline,
     subheadline: slide.subheadline ?? null,
     cta_text: slide.ctaText ?? null,
@@ -115,6 +127,11 @@ export function mapHero(
     image_url: imageUrl,
     sort_order: index,
     active: slide.active ?? true,
+    badge: layout === "promo" ? slide.badge ?? null : null,
+    brand_name: layout === "promo" ? slide.brandName ?? null : null,
+    compare_at_price:
+      layout === "promo" ? slide.compareAtPrice ?? null : null,
+    price: layout === "promo" ? slide.price ?? null : null,
   };
 }
 

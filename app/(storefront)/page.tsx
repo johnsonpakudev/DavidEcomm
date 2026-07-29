@@ -9,10 +9,13 @@ import { ShopWithConfidence } from "@/components/homepage/shop-with-confidence";
 import { TrustBar } from "@/components/homepage/trust-bar";
 import { ProductCarousel } from "@/components/product/product-carousel";
 import {
+  getHeroes,
   getInspirationImages,
   getProductCarousels,
 } from "@/lib/homepage";
-import { MARKETING_HERO_SLIDE } from "@/lib/homepage/marketing-assets";
+import {
+  buildHomepageHeroSlides,
+} from "@/lib/homepage/marketing-assets";
 import type { ProductCarouselConfig } from "@/lib/homepage/types";
 import {
   getActiveCarousels,
@@ -56,10 +59,13 @@ function CarouselSection({
 }
 
 export default async function HomePage() {
-  const [inspirationImages, carouselConfigs] = await Promise.all([
+  const [heroes, inspirationImages, carouselConfigs] = await Promise.all([
+    getHeroes(),
     getInspirationImages(),
     getProductCarousels(),
   ]);
+
+  const heroSlides = buildHomepageHeroSlides(heroes);
 
   const activeCarousels = sortCarouselsForLayout(
     getActiveCarousels(carouselConfigs),
@@ -80,7 +86,7 @@ export default async function HomePage() {
   return (
     <>
       <div className="relative">
-        <HeroCarousel slides={[MARKETING_HERO_SLIDE]} imageOnly />
+        <HeroCarousel slides={heroSlides} />
         <HeroTrustBar className="sticky top-[104px] z-30 lg:top-[108px]" />
       </div>
       {featured ? (

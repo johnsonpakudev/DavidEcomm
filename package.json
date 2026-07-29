@@ -18,7 +18,11 @@
     "verify:production": "node scripts/verify-production.mjs",
     "verify:production:local": "node scripts/verify-production.mjs --local",
     "cms:migrate": "tsx scripts/cms/migrate.ts",
+    "cms:push": "tsx scripts/cms/push-schema.ts",
+    "cms:cleanup": "tsx scripts/cms/cleanup-public-payload-artifacts.ts",
     "cms:seed": "tsx scripts/cms/seed-homepage.ts",
+    "cms:reset-admin": "tsx scripts/cms/reset-admin.ts",
+    "generate:importmap": "payload generate:importmap",
     "generate:types": "payload generate:types"
   },
   "dependencies": {

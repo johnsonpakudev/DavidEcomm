@@ -6,7 +6,7 @@ test("homepage renders hero and featured products", async ({ page }) => {
   await expect(page.locator('img[src*="marketing/carousel"]')).toBeVisible();
   await expect(page.getByText(/australia wide shipping/i)).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: /shop by essentials/i }),
+    page.getByRole("heading", { name: /shop by collection/i }),
   ).toBeVisible();
   await expect(page.getByAltText("On clearance")).toBeVisible();
   await expect(

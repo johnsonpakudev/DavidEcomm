@@ -1,6 +1,11 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { GlobalAfterChangeHook } from "payload";
 
 export const revalidateHomepage: GlobalAfterChangeHook = () => {
-  revalidateTag("homepage", "max");
+  try {
+    revalidateTag("homepage", "max");
+    revalidatePath("/");
+  } catch {
+    // cms:seed and other standalone scripts run outside the Next.js request context.
+  }
 };

@@ -111,7 +111,13 @@ export async function getHomepageContentSnapshot() {
 
 export async function getHeroes() {
   const content = await getHomepageContent();
-  return content.heroes.filter((hero) => hero.active ?? true);
+  return content.heroes
+    .filter((hero) => hero.active ?? true)
+    .map((hero) => ({
+      ...hero,
+      layout: hero.layout ?? "standard",
+    }))
+    .sort((left, right) => left.sort_order - right.sort_order);
 }
 
 export async function getPromos() {

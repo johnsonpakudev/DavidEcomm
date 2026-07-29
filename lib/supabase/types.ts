@@ -207,8 +207,11 @@ export interface ProductDetail extends Product {
   relatedProducts: Product[];
 }
 
+export type HeroLayout = "standard" | "promo";
+
 export interface HomepageHero {
   id: string;
+  layout: HeroLayout;
   headline: string;
   subheadline: string | null;
   cta_text: string | null;
@@ -216,6 +219,10 @@ export interface HomepageHero {
   image_url: string;
   sort_order: number;
   active?: boolean;
+  badge?: string | null;
+  brand_name?: string | null;
+  compare_at_price?: number | null;
+  price?: number | null;
 }
 
 export interface HomepagePromo {

@@ -5,6 +5,10 @@ import { postgresAdapter } from "@payloadcms/db-postgres";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
+import {
+  getDatabaseSsl,
+  resolveDatabaseUrl,
+} from "@/lib/db/resolve-database-url";
 import { Media } from "@/payload/collections/Media";
 import { Users } from "@/payload/collections/Users";
 import { Homepage } from "@/payload/globals/Homepage";
@@ -30,9 +34,11 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || "",
+      connectionString: resolveDatabaseUrl(process.env.DATABASE_URL || ""),
+      ssl: getDatabaseSsl(process.env.DATABASE_URL),
     },
-    push: process.env.NODE_ENV !== "production",
+    push: process.env.PAYLOAD_DB_PUSH === "true",
+    schemaName: "payload",
   }),
   sharp,
 });

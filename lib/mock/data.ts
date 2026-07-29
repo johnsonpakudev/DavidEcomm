@@ -930,6 +930,7 @@ export const mockProducts: Product[] = [
 export const mockHomepageHeroes: HomepageHero[] = [
   {
     id: "hero-1",
+    layout: "standard",
     headline: "Premium fixtures for the spaces that matter most.",
     subheadline: "Refined bathroom, kitchen and hardware collections with honest pricing.",
     cta_text: "Shop premium vanities",
@@ -941,6 +942,7 @@ export const mockHomepageHeroes: HomepageHero[] = [
   },
   {
     id: "hero-2",
+    layout: "standard",
     headline: "Architectural details, built on quality and trust.",
     subheadline: "Discover statement handles, brass tapware and timeless utility pieces.",
     cta_text: "Explore best sellers",

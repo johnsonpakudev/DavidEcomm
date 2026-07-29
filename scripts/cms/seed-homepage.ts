@@ -1,18 +1,23 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { getPayload } from "payload";
-
-import config from "@payload-config";
 import type { CategoryIconKey } from "@/lib/homepage/icon-keys";
+import { prepareCmsEnv } from "./prepare-env";
+
+prepareCmsEnv();
 
 interface HomepageManifest {
   heroes: Array<{
+    layout?: string | null;
     headline: string;
     subheadline?: string | null;
     cta_text?: string | null;
     cta_href?: string | null;
     image_url: string;
+    badge?: string | null;
+    brand_name?: string | null;
+    compare_at_price?: number | null;
+    price?: number | null;
     active?: boolean;
   }>;
   promos: Array<{
@@ -53,16 +58,25 @@ async function main() {
     readFileSync(MANIFEST_PATH, "utf8"),
   ) as HomepageManifest;
 
+  const { getPayload } = await import("payload");
+  const { default: config } = await import("@payload-config");
   const payload = await getPayload({ config });
 
   await payload.updateGlobal({
     slug: "homepage",
     data: {
       heroes: manifest.heroes.map((hero) => ({
+        layout: (hero.layout === "promo" ? "promo" : "standard") as
+          | "standard"
+          | "promo",
         headline: hero.headline,
         subheadline: hero.subheadline,
         ctaText: hero.cta_text,
         ctaHref: hero.cta_href,
+        badge: hero.badge,
+        brandName: hero.brand_name,
+        compareAtPrice: hero.compare_at_price,
+        price: hero.price,
         externalImageUrl: hero.image_url,
         active: hero.active ?? true,
       })),
