@@ -11,7 +11,9 @@ def build_invoice(output_path: Path) -> None:
     invoice_date = date(2026, 7, 30)
     due_date = invoice_date + timedelta(days=14)
     invoice_number = "INV-2026-0730-001"
-    total = 500.00
+    subtotal = 500.00
+    gst = 50.00
+    total = 550.00
     payid_mobile = "0406 938 895"
 
     pdf = FPDF()
@@ -20,7 +22,7 @@ def build_invoice(output_path: Path) -> None:
 
     pdf.set_font("Helvetica", "B", 22)
     pdf.set_text_color(26, 39, 68)
-    pdf.cell(0, 12, "INVOICE", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 12, "TAX INVOICE", new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font("Helvetica", "", 10)
     pdf.set_text_color(80, 80, 80)
@@ -64,8 +66,9 @@ def build_invoice(output_path: Path) -> None:
     pdf.set_fill_color(26, 39, 68)
     pdf.set_text_color(255, 255, 255)
     pdf.set_font("Helvetica", "B", 10)
-    pdf.cell(140, 9, "Description", border=0, fill=True)
-    pdf.cell(50, 9, "Amount (AUD)", border=0, fill=True, align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(110, 9, "Description", border=0, fill=True)
+    pdf.cell(40, 9, "Amount (ex GST)", border=0, fill=True, align="R")
+    pdf.cell(40, 9, "GST", border=0, fill=True, align="R", new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_text_color(40, 40, 40)
     pdf.set_font("Helvetica", "", 10)
@@ -73,7 +76,7 @@ def build_invoice(output_path: Path) -> None:
 
     desc_y = pdf.get_y()
     pdf.multi_cell(
-        140,
+        110,
         7,
         "Professional services and website code - DavidEcomm\n"
         "e-commerce platform development (partial payment)",
@@ -82,16 +85,28 @@ def build_invoice(output_path: Path) -> None:
     )
     desc_end_y = pdf.get_y()
     row_height = desc_end_y - desc_y
-    pdf.set_xy(150, desc_y)
-    pdf.cell(50, row_height, f"${total:,.2f}", border="B", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_xy(120, desc_y)
+    pdf.cell(40, row_height, f"${subtotal:,.2f}", border="B", align="R")
+    pdf.cell(40, row_height, f"${gst:,.2f}", border="B", align="R", new_x="LMARGIN", new_y="NEXT")
 
-    pdf.ln(8)
+    pdf.ln(6)
+
+    totals_x = 120
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(40, 40, 40)
+    pdf.set_x(totals_x)
+    pdf.cell(40, 7, "Subtotal (ex GST):", align="R")
+    pdf.cell(40, 7, f"${subtotal:,.2f}", align="R", new_x="LMARGIN", new_y="NEXT")
+
+    pdf.set_x(totals_x)
+    pdf.cell(40, 7, "GST (10%):", align="R")
+    pdf.cell(40, 7, f"${gst:,.2f}", align="R", new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font("Helvetica", "B", 12)
     pdf.set_text_color(26, 39, 68)
-    pdf.set_x(120)
-    pdf.cell(70, 10, "TOTAL DUE (inc. tax):", align="R")
-    pdf.cell(50, 10, f"${total:,.2f}", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(totals_x)
+    pdf.cell(40, 10, "TOTAL DUE (inc. GST):", align="R")
+    pdf.cell(40, 10, f"${total:,.2f}", align="R", new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(4)
     pdf.set_font("Helvetica", "I", 9)
@@ -99,11 +114,10 @@ def build_invoice(output_path: Path) -> None:
     pdf.cell(
         0,
         5,
-        "All amounts in AUD. Total payable is $500.00 inclusive of tax.",
+        "All amounts in AUD. GST of $50.00 is payable on top of the $500.00 service fee.",
         new_x="LMARGIN",
         new_y="NEXT",
     )
-    pdf.cell(0, 5, "Not registered for GST. No GST has been charged.", new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(8)
     pdf.set_font("Helvetica", "B", 10)
@@ -115,7 +129,7 @@ def build_invoice(output_path: Path) -> None:
     payment_lines = [
         f"PayID (mobile): {payid_mobile}",
         "Account Name: Johnson Paku",
-        f"Amount: ${total:,.2f} inc. tax",
+        f"Amount: ${total:,.2f} inc. GST",
         f"Reference: {invoice_number}",
     ]
     for line in payment_lines:
