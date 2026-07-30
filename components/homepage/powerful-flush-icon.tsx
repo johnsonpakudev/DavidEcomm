@@ -1,53 +1,55 @@
 import { cn } from "@/lib/utils";
 
+const STROKE = "#2D3748";
+const SWIRL = "#2F80ED";
+
 export function PowerfulFlushIcon({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 48 48"
+      viewBox="0 0 52 46"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("size-7 md:size-8", className)}
+      className={cn("size-10 md:size-11", className)}
       aria-hidden="true"
     >
+      {/* Cistern */}
+      <rect
+        x="4"
+        y="7"
+        width="14"
+        height="20"
+        rx="1.5"
+        fill="#FFFFFF"
+        stroke={STROKE}
+        strokeWidth="2.25"
+      />
+      <path d="M4 9.5h14" stroke={STROKE} strokeWidth="2.25" strokeLinecap="round" />
+
+      {/* Bowl */}
       <path
-        d="M8 12.5h13.5a2 2 0 0 1 2 2V27a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V14.5a2 2 0 0 1 2-2Z"
-        fill="#F3F6F9"
-        stroke="#1E2B3B"
-        strokeWidth="1.5"
+        d="M18 19.5H36.5C41.5 19.5 44.5 22.5 44.5 27.5V29.5C44.5 35.5 40 40 33.5 40H23.5C18 40 14.5 36 14.5 31V26C14.5 22 16.5 19.5 18 19.5Z"
+        fill="#FFFFFF"
+        stroke={STROKE}
+        strokeWidth="2.25"
         strokeLinejoin="round"
       />
+      <path d="M18 19.5H38.5" stroke={STROKE} strokeWidth="2.25" strokeLinecap="round" />
+      <path d="M22 40H35" stroke={STROKE} strokeWidth="2.25" strokeLinecap="round" />
+
+      {/* Swirl */}
       <path
-        d="M10.5 12.5V10.75a2.25 2.25 0 0 1 2.25-2.25h4.5A2.25 2.25 0 0 1 19.5 10.75V12.5"
-        stroke="#1E2B3B"
-        strokeWidth="1.5"
+        d="M31.5 26.5C35.8 26.5 38.5 29.2 38.5 32.8C38.5 37.2 34.2 39.8 30.2 39.8C25.5 39.8 22.5 36.5 22.5 32.5C22.5 27.8 26.8 24.8 32 24.8C37.5 24.8 41 28.5 41 33.2"
+        stroke={SWIRL}
+        strokeWidth="2.5"
         strokeLinecap="round"
+        fill="none"
       />
       <path
-        d="M21.5 16.25h11.25c2.9 0 5.25 2.35 5.25 5.25v4.25c0 5.45-4.4 9.85-9.85 9.85h-2.4c-5.45 0-9.85-4.4-9.85-9.85v-4.25c0-2.9 2.35-5.25 5.25-5.25Z"
-        fill="#E8F1FA"
-        stroke="#1E2B3B"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M27.5 24.25c2.35 1.45 2.55 4.55.45 6.35c-1.45 1.2-3.55 1.05-4.75-.35"
-        stroke="#4F86C6"
-        strokeWidth="2"
+        d="M31.8 29.2C34.2 29.2 35.8 30.8 35.8 32.8C35.8 35.2 33.5 36.8 31.2 36.8C28.5 36.8 26.8 35 26.8 32.8C26.8 30.5 28.8 28.8 31.5 28.8C34.2 28.8 36 30.5 36 32.8"
+        stroke={SWIRL}
+        strokeWidth="2.15"
         strokeLinecap="round"
-      />
-      <path
-        d="M28.25 21.75c1.35-1.65 3.75-2.05 5.35-.75"
-        stroke="#4F86C6"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        opacity="0.85"
-      />
-      <path
-        d="M26.75 27.1c-.55 1.15-1.85 1.7-3 1.25"
-        stroke="#6FA8E8"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        opacity="0.9"
+        fill="none"
       />
     </svg>
   );
