@@ -90,12 +90,19 @@ def build_invoice(output_path: Path) -> None:
     pdf.set_font("Helvetica", "B", 12)
     pdf.set_text_color(26, 39, 68)
     pdf.set_x(120)
-    pdf.cell(70, 10, "TOTAL DUE:", align="R")
+    pdf.cell(70, 10, "TOTAL DUE (inc. tax):", align="R")
     pdf.cell(50, 10, f"${total:,.2f}", align="R", new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(4)
     pdf.set_font("Helvetica", "I", 9)
     pdf.set_text_color(100, 100, 100)
+    pdf.cell(
+        0,
+        5,
+        "All amounts in AUD. Total payable is $500.00 inclusive of tax.",
+        new_x="LMARGIN",
+        new_y="NEXT",
+    )
     pdf.cell(0, 5, "Not registered for GST. No GST has been charged.", new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(8)
@@ -108,7 +115,7 @@ def build_invoice(output_path: Path) -> None:
     payment_lines = [
         f"PayID (mobile): {payid_mobile}",
         "Account Name: Johnson Paku",
-        f"Amount: ${total:,.2f}",
+        f"Amount: ${total:,.2f} inc. tax",
         f"Reference: {invoice_number}",
     ]
     for line in payment_lines:
