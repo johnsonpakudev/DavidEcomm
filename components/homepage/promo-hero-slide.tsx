@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Droplets, Shield } from "lucide-react";
 
+import { PowerfulFlushIcon } from "@/components/homepage/powerful-flush-icon";
 import { brand } from "@/lib/brand";
 import type { HomepageHero } from "@/lib/supabase/types";
 import { cn } from "@/lib/utils";
@@ -12,25 +13,6 @@ function formatHeroPrice(dollars: number) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(dollars);
-}
-
-function FlushIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M6 8h12v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V8z" />
-      <path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-      <path d="M12 13c1.2 1.5 1.2 3.5 0 5" />
-    </svg>
-  );
 }
 
 const promoFeatures = [
@@ -69,7 +51,7 @@ function PromoFeatureIcon({ featureKey }: { featureKey: string }) {
   }
 
   if (featureKey === "flush") {
-    return <FlushIcon className="size-7 text-tangaroa md:size-8" />;
+    return <PowerfulFlushIcon />;
   }
 
   return <BadgeCheck className="size-7 text-tangaroa md:size-8" />;
