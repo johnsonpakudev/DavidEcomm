@@ -12,6 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { brand } from "@/lib/brand";
 import { getCachedCategories } from "@/lib/categories";
+import {
+  buildMegaMenuVisualChildrenIndex,
+  getMegaMenuVisualChildren,
+} from "@/lib/navigation/mega-menu";
 import { getNavigationTree } from "@/lib/navigation";
 
 export async function SiteHeader() {
@@ -19,6 +23,7 @@ export async function SiteHeader() {
     getCachedCategories(),
     getNavigationTree(),
   ]);
+  const visualChildrenIndex = buildMegaMenuVisualChildrenIndex(categories);
 
   return (
     <header className="sticky top-0 z-40 border-b border-saltwater bg-white/95 backdrop-blur">
@@ -66,29 +71,32 @@ export async function SiteHeader() {
                       >
                         All {pillar.label}
                       </Link>
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {pillar.children.map((child) => {
-                          const grandChildren = categories
-                            .filter((category) => category.parent_id === child.id)
-                            .slice(0, 8);
+                          const visualChildren = getMegaMenuVisualChildren(
+                            child,
+                            visualChildrenIndex,
+                          );
 
                           return (
-                            <div key={child.id} className="space-y-1">
+                            <div key={child.id} className="space-y-2">
                               <Link
                                 href={`/categories/${child.slug}`}
-                                className="block text-sm text-slate-grey"
+                                className="block text-sm font-semibold text-tangaroa"
                               >
                                 {child.name}
                               </Link>
-                              {grandChildren.map((grandChild) => (
-                                <Link
-                                  key={grandChild.id}
-                                  href={`/categories/${grandChild.slug}`}
-                                  className="block pl-4 text-xs text-slate-grey"
-                                >
-                                  {grandChild.name}
-                                </Link>
-                              ))}
+                              <div className="space-y-1 pl-3">
+                                {visualChildren.map((visualChild) => (
+                                  <Link
+                                    key={visualChild.id}
+                                    href={`/categories/${visualChild.slug}`}
+                                    className="block text-xs text-slate-grey hover:text-tangaroa"
+                                  >
+                                    {visualChild.name}
+                                  </Link>
+                                ))}
+                              </div>
                             </div>
                           );
                         })}
@@ -118,7 +126,7 @@ export async function SiteHeader() {
         </div>
       </div>
       <div className="hidden bg-tangaroa lg:block">
-        <div className="site-shell">
+        <div className="site-shell relative">
           <MegaMenu pillars={pillars} categories={categories} />
         </div>
       </div>
