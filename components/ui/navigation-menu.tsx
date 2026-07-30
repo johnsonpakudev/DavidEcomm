@@ -9,9 +9,13 @@ function NavigationMenu({
   className,
   children,
   viewport = true,
+  viewportClassName,
+  viewportWrapperClassName,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
   viewport?: boolean
+  viewportClassName?: string
+  viewportWrapperClassName?: string
 }) {
   return (
     <NavigationMenuPrimitive.Root
@@ -24,7 +28,12 @@ function NavigationMenu({
       {...props}
     >
       {children}
-      {viewport && <NavigationMenuViewport />}
+      {viewport ? (
+        <NavigationMenuViewport
+          className={viewportClassName}
+          wrapperClassName={viewportWrapperClassName}
+        />
+      ) : null}
     </NavigationMenuPrimitive.Root>
   )
 }
@@ -97,18 +106,22 @@ function NavigationMenuContent({
 
 function NavigationMenuViewport({
   className,
+  wrapperClassName,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport> & {
+  wrapperClassName?: string
+}) {
   return (
     <div
       className={cn(
-        "absolute top-full left-0 isolate z-50 flex justify-center"
+        "absolute top-full left-0 isolate z-50 flex w-full justify-center",
+        wrapperClassName,
       )}
     >
       <NavigationMenuPrimitive.Viewport
         data-slot="navigation-menu-viewport"
         className={cn(
-          "origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-lg bg-popover text-popover-foreground shadow ring-1 ring-foreground/10 duration-100 md:w-(--radix-navigation-menu-viewport-width) data-open:animate-in data-open:zoom-in-90 data-closed:animate-out data-closed:zoom-out-90",
+          "origin-top-center relative mt-0 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-none border border-saltwater bg-white text-popover-foreground shadow-2xl duration-200 md:w-full data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}

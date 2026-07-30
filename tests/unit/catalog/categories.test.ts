@@ -45,7 +45,7 @@ describe("buildCategoryTree", () => {
 
     expect(bathroom?.show_in_mega_menu).toBe(true);
     expect(vanities?.show_in_mega_menu).toBe(true);
-    expect(wallHung?.show_in_mega_menu).toBe(false);
+    expect(wallHung?.show_in_mega_menu).toBe(true);
   });
 
   it("ignores malformed semicolon tags from Shopify exports", () => {

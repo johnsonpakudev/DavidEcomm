@@ -245,11 +245,36 @@ export function buildCategoryTree(rows: CsvProductRow[]): {
     });
   }
 
+  applyMegaMenuVisualChildren(categories);
+
   return {
     categories,
     collectionTagsBySku,
     categoryIdByPath,
   };
+}
+
+/** Surface depth-3 categories in the mega-menu visual panel when their L2 parent is curated. */
+export function applyMegaMenuVisualChildren(categories: NormalizedCategory[]): void {
+  const byId = new Map(categories.map((category) => [category.id, category]));
+
+  for (const category of categories) {
+    if (!category.parent_id) {
+      continue;
+    }
+
+    const parent = byId.get(category.parent_id);
+    if (!parent?.show_in_mega_menu || !parent.parent_id) {
+      continue;
+    }
+
+    const grandparent = byId.get(parent.parent_id);
+    if (!grandparent || grandparent.parent_id !== null) {
+      continue;
+    }
+
+    category.show_in_mega_menu = true;
+  }
 }
 
 /** Assign the first product image found per mega-menu category. */
