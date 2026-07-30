@@ -26,6 +26,7 @@ describe("homepage mapper", () => {
 
     expect(hero).toEqual({
       id: "hero-1",
+      layout: "standard",
       headline: "Direct from the manufacturer",
       subheadline: "Quality supplies",
       cta_text: "Shop now",
@@ -33,6 +34,10 @@ describe("homepage mapper", () => {
       image_url: "https://cdn.shopify.com/example.jpg",
       sort_order: 0,
       active: true,
+      badge: null,
+      brand_name: null,
+      compare_at_price: null,
+      price: null,
     });
   });
 
