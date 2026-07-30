@@ -30,6 +30,9 @@ async function main() {
       collection: "users",
       data: { email, password },
     });
+    if (!result.user) {
+      throw new Error("Login succeeded but no user was returned");
+    }
     console.log("Login OK for:", result.user.email);
   } catch (error) {
     console.error("Login failed:", error instanceof Error ? error.message : error);
