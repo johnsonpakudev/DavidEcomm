@@ -87,7 +87,7 @@ export default async function HomePage() {
     <>
       <div className="relative">
         <HeroCarousel slides={heroSlides} />
-        <HeroTrustBar className="sticky top-[104px] z-30 lg:top-[108px]" />
+        <HeroTrustBar className="sticky top-[var(--site-header-sticky-offset,7.25rem)] z-30" />
       </div>
       {featured ? (
         <CarouselSection

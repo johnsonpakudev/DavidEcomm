@@ -6,18 +6,22 @@ const trustItems = [
   {
     icon: Truck,
     label: "Australia wide shipping",
+    shortLabel: "AU shipping",
   },
   {
     icon: Star,
     label: "Trusted by Australians",
+    shortLabel: "Trusted AU",
   },
   {
     icon: Package,
     label: "2000+ products",
+    shortLabel: "2000+ products",
   },
   {
     icon: Headphones,
-    label: "Expert advice real support",
+    label: "Expert advice & support",
+    shortLabel: "Expert support",
   },
 ] as const;
 
@@ -25,28 +29,35 @@ export function HeroTrustBar({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "border-b border-tangaroa/80 bg-tangaroa text-white",
+        "border-t border-white/10 bg-tangaroa text-white shadow-[0_8px_24px_-12px_rgba(30,43,59,0.45)]",
         className,
       )}
     >
       <div className="site-shell">
-        <div className="grid grid-cols-2 gap-3 py-3 md:grid-cols-4 md:gap-4 md:py-3.5">
+        <ul className="grid h-10 grid-cols-4 items-center gap-1 sm:h-11 sm:gap-2 md:gap-4">
           {trustItems.map((item) => {
             const Icon = item.icon;
 
             return (
-              <div
+              <li
                 key={item.label}
-                className="flex items-center justify-center gap-2 text-center md:gap-3"
+                className="flex min-w-0 items-center justify-center gap-1 sm:gap-1.5 md:gap-2"
               >
-                <Icon className="size-4 shrink-0 text-warm-stone md:size-5" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/95 md:text-xs">
-                  {item.label}
+                <Icon
+                  className="size-3.5 shrink-0 text-warm-stone sm:size-4"
+                  aria-hidden="true"
+                />
+                <span
+                  className="truncate text-[9px] font-semibold uppercase tracking-[0.08em] text-white/95 sm:text-[10px] sm:tracking-[0.1em] md:text-xs md:tracking-[0.12em]"
+                  title={item.label}
+                >
+                  <span className="sm:hidden">{item.shortLabel}</span>
+                  <span className="hidden sm:inline">{item.label}</span>
                 </span>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

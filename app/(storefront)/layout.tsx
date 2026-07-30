@@ -30,7 +30,7 @@ export default function StorefrontLayout({
       lang="en-AU"
       className={`${fontSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white font-sans text-base text-tangaroa antialiased">
+      <body className="min-h-full flex flex-col bg-white font-sans text-base text-tangaroa antialiased [--site-header-sticky-offset:7.25rem] lg:[--site-header-sticky-offset:9.75rem]">
         <AnalyticsProvider>
           <CartProvider>
             <a
