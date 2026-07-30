@@ -34,21 +34,21 @@ export function HeroTrustBar({ className }: { className?: string }) {
       )}
     >
       <div className="site-shell">
-        <ul className="grid h-10 grid-cols-4 items-center gap-1 sm:h-11 sm:gap-2 md:gap-4">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-2.5 py-3 sm:grid-cols-4 sm:gap-2 sm:py-0 sm:h-11 sm:items-center md:gap-4">
           {trustItems.map((item) => {
             const Icon = item.icon;
 
             return (
               <li
                 key={item.label}
-                className="flex min-w-0 items-center justify-center gap-1 sm:gap-1.5 md:gap-2"
+                className="flex min-w-0 items-center justify-center gap-1.5 sm:gap-1.5 md:gap-2"
               >
                 <Icon
-                  className="size-3.5 shrink-0 text-warm-stone sm:size-4"
+                  className="size-4 shrink-0 text-warm-stone sm:size-4"
                   aria-hidden="true"
                 />
                 <span
-                  className="truncate text-[9px] font-semibold uppercase tracking-[0.08em] text-white/95 sm:text-[10px] sm:tracking-[0.1em] md:text-xs md:tracking-[0.12em]"
+                  className="text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-white/95 sm:truncate sm:text-[10px] sm:tracking-[0.1em] md:text-xs md:tracking-[0.12em]"
                   title={item.label}
                 >
                   <span className="sm:hidden">{item.shortLabel}</span>
